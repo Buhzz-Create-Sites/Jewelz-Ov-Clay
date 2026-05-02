@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jewelz Ov Clay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --clay-terracotta: #C9552A;
+      --clay-gold: #E8B84B;
+      --clay-teal: #2E9E8F;
+      --clay-cobalt: #2B4FBE;
+      --clay-rose: #E07070;
+      --clay-cream: #FDF6EC;
+      --clay-dark: #1A1008;
+      --clay-mid: #3D2B1A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--clay-cream);
+      color: var(--clay-dark);
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--clay-terracotta);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, background 0.2s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--clay-terracotta);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s, height 0.2s;
+      opacity: 0.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: var(--clay-cream);
+      border-bottom: 2px solid var(--clay-dark);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--clay-dark);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--clay-terracotta); }
+    nav ul { list-style: none; display: flex; gap: 36px; }
+    nav ul a {
+      text-decoration: none;
+      color: var(--clay-mid);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--clay-terracotta); }
+    .nav-cart {
+      position: relative;
+      background: var(--clay-dark);
+      color: var(--clay-cream);
+      border: none;
+      padding: 10px 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background 0.2s;
+    }
+    .nav-cart:hover { background: var(--clay-terracotta); }
+    .cart-count {
+      position: absolute; top: -8px; right: -8px;
+      background: var(--clay-gold);
+      color: var(--clay-dark);
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+    .hero-left {
+      background: var(--clay-terracotta);
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      bottom: -80px; left: -80px;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      top: 40px; right: 40px;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--clay-gold);
+      color: var(--clay-dark);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      margin-bottom: 32px;
+      width: fit-content;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 900;
+      color: var(--clay-cream);
+      line-height: 1.0;
+      margin-bottom: 28px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--clay-gold);
+    }
+    .hero-desc {
+      color: rgba(253,246,236,0.85);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 380px;
+      margin-bottom: 40px;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--clay-cream);
+      color: var(--clay-dark);
+      text-decoration: none;
+      padding: 16px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      cursor: none;
+      transition: background 0.2s, color 0.2s;
+      width: fit-content;
+    }
+    .btn-primary:hover {
+      background: var(--clay-gold);
+      color: var(--clay-dark);
+    }
+    .hero-right {
+      background: var(--clay-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+    }
+    .hero-visual {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 3/4;
+      position: relative;
+    }
+    /* Decorative clay-inspired abstract art for hero */
+    .clay-blob {
+      position: absolute;
+      border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+      animation: morph 6s ease-in-out infinite;
+    }
+    .blob1 {
+      width: 260px; height: 260px;
+      background: var(--clay-teal);
+      top: 10%; left: 5%;
+      animation-delay: 0s;
+    }
+    .blob2 {
+      width: 200px; height: 200px;
+      background: var(--clay-rose);
+      bottom: 15%; right: 5%;
+      animation-delay: -2s;
+      border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%;
+    }
+    .blob3 {
+      width: 150px; height: 150px;
+      background: var(--clay-gold);
+      bottom: 30%; left: 25%;
+      animation-delay: -4s;
+      border-radius: 70% 30% 50% 50% / 30% 70% 30% 70%;
+    }
+    .blob4 {
+      width: 100px; height: 100px;
+      background: var(--clay-cobalt);
+      top: 20%; right: 15%;
+      animation-delay: -1s;
+      border-radius: 50% 50% 70% 30% / 50% 50% 30% 70%;
+    }
+    .hero-label {
+      position: absolute;
+      bottom: 30px; right: 30px;
+      background: var(--clay-dark);
+      color: var(--clay-cream);
+      padding: 14px 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+    }
+    @keyframes morph {
+      0%, 100% { border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; transform: rotate(0deg); }
+      33% { border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%; transform: rotate(5deg) scale(1.05); }
+      66% { border-radius: 70% 30% 50% 50% / 30% 70% 70% 30%; transform: rotate(-3deg) scale(0.97); }
+    }
+
+    /* MARQUEE STRIP */
+    .marquee-strip {
+      background: var(--clay-dark);
+      color: var(--clay-gold);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-block;
+      animation: marquee 18s linear infinite;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .marquee-inner span { margin: 0 28px; color: var(--clay-terracotta); }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* SHOP SECTION */
+    .shop {
+      padding: 100px 48px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      border-bottom: 2px solid var(--clay-dark);
+      padding-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1;
+    }
+    .section-sub {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--clay-terracotta);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2px;
+    }
+
+    .product-card {
+      background: white;
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-card:hover .product-overlay { opacity: 1; }
+    .product-img {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Each product has unique clay-inspired art */
+    .prod-art {
+      width: 80%;
+      height: 80%;
+      position: relative;
+    }
+    .product-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(26,16,8,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .add-to-cart-btn {
+      background: var(--clay-gold);
+      color: var(--clay-dark);
+      border: none;
+      padding: 14px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background 0.2s;
+    }
+    .add-to-cart-btn:hover { background: var(--clay-cream); }
+    .product-info { padding: 20px 20px 24px; }
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .product-type {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--clay-terracotta);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .product-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--clay-dark);
+    }
+    .product-badge {
+      position: absolute;
+      top: 14px; left: 14px;
+      background: var(--clay-terracotta);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+    }
+
+    /* ABOUT STRIP */
+    .about-strip {
+      background: var(--clay-cobalt);
+      color: var(--clay-cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 420px;
+    }
+    .about-left {
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .about-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 900;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+    .about-left h2 em { color: var(--clay-gold); font-style: italic; }
+    .about-left p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      opacity: 0.85;
+      max-width: 400px;
+    }
+    .about-right {
+      background: var(--clay-teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      position: relative;
+      z-index: 1;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--clay-cream);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(253,246,236,0.7);
+    }
+    .about-right::before {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      bottom: -100px; right: -100px;
+    }
+
+    /* CART SIDEBAR */
+    .cart-sidebar {
+      position: fixed;
+      top: 0; right: -420px;
+      width: 420px; height: 100vh;
+      background: var(--clay-cream);
+      border-left: 2px solid var(--clay-dark);
+      z-index: 200;
+      transition: right 0.35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-sidebar.open { right: 0; }
+    .cart-header {
+      padding: 28px 32px;
+      border-bottom: 2px solid var(--clay-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cart-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+    .close-cart {
+      background: none; border: none;
+      font-size: 1.5rem; cursor: none;
+      color: var(--clay-dark);
+      line-height: 1;
+    }
+    .cart-items { flex: 1; overflow-y: auto; padding: 24px 32px; }
+    .cart-empty {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--clay-mid);
+      opacity: 0.6;
+    }
+    .cart-empty p { font-size: 0.9rem; margin-top: 8px; }
+    .cart-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(26,16,8,0.12);
+    }
+    .cart-item-img {
+      width: 70px; height: 70px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .cart-item-info { flex: 1; }
+    .cart-item-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .cart-item-price {
+      font-size: 0.85rem;
+      color: var(--clay-terracotta);
+      font-weight: 600;
+    }
+    .cart-item-remove {
+      background: none; border: none; cursor: none;
+      color: var(--clay-mid); font-size: 0.8rem;
+      opacity: 0.5;
+      margin-top: 6px;
+      display: block;
+    }
+    .cart-item-remove:hover { opacity: 1; }
+    .cart-footer {
+      padding: 24px 32px;
+      border-top: 2px solid var(--clay-dark);
+    }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+    .paypal-btn {
+      width: 100%;
+      padding: 18px;
+      background: #FFC439;
+      border: none;
+      border-radius: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .paypal-btn:hover { background: #f0b429; }
+    .paypal-logo {
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+    .paypal-logo .pay { color: #003087; }
+    .paypal-logo .pal { color: #009CDE; }
+
+    /* Cart overlay */
+    .cart-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,16,8,0.5);
+      z-index: 199;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    /* FOOTER */
+    footer {
+      background: var(--clay-dark);
+      color: var(--clay-cream);
+      padding: 60px 48px 36px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(253,246,236,0.15);
+      margin-bottom: 32px;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .footer-brand span { color: var(--clay-terracotta); }
+    .footer-tagline {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--clay-gold);
+      margin-bottom: 18px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a {
+      text-decoration: none;
+      color: rgba(253,246,236,0.65);
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--clay-cream); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      opacity: 0.4;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      nav ul { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 350px; }
+      .shop { padding: 60px 24px; }
+      .about-strip { grid-template-columns: 1fr; }
+      .cart-sidebar { width: 100%; right: -100%; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer { padding: 40px 24px 24px; }
+      .section-header { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Cart Overlay -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="close-cart" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <div style="font-size:2.5rem">🧡</div>
+        <p>Your cart is empty.<br>Go find something beautiful.</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="paypal-btn" onclick="checkoutWithPayPal()">
+        <span>Pay with</span>
+        <span class="paypal-logo"><span class="pay">Pay</span><span class="pal">Pal</span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Jewelz <span>Ov</span> Clay</a>
+    <ul>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#about">Our Story</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-cart" onclick="toggleCart()">
+      Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">✦ Handcrafted in Philadelphia</div>
+      <h1>Wear the<br/><em>Art.</em></h1>
+      <p class="hero-desc">Bold, colorful polymer clay jewelry — baked with love, born from the pandemic. Every piece is one-of-a-kind, just like you.</p>
+      <a href="#shop" class="btn-primary">Shop the Collection →</a>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="clay-blob blob1"></div>
+        <div class="clay-blob blob2"></div>
+        <div class="clay-blob blob3"></div>
+        <div class="clay-blob blob4"></div>
+      </div>
+      <div class="hero-label">
+        🔥 Baked. Not bought.<br/>Polymer Clay Since 2020
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-inner">
+      Handmade <span>✦</span> One of a Kind <span>✦</span> Polymer Clay <span>✦</span> Philadelphia Made <span>✦</span> Baked with Love <span>✦</span> Bold &amp; Colorful <span>✦</span> Wearable Art <span>✦</span> &nbsp;
+      Handmade <span>✦</span> One of a Kind <span>✦</span> Polymer Clay <span>✦</span> Philadelphia Made <span>✦</span> Baked with Love <span>✦</span> Bold &amp; Colorful <span>✦</span> Wearable Art <span>✦</span>
+    </div>
+  </div>
+
+  <!-- SHOP -->
+  <section class="shop" id="shop">
+    <div class="section-header">
+      <h2 class="section-title">The Collection</h2>
+      <span class="section-sub">All pieces handmade</span>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+      <!-- Products injected by JS -->
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-strip" id="about">
+    <div class="about-left">
+      <h2>Born in a<br/><em>pandemic.</em><br/>Built with clay.</h2>
+      <p>During the lockdown of 2020, a creative spark turned into something real. Jewelz Ov Clay started as a way to make beauty during hard times — and the "Ov" in our name? That's because every piece goes right into the oven. Handmade in Philly, worn everywhere.</p>
+    </div>
+    <div class="about-right">
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-num">2020</span>
+          <span class="stat-label">Founded during the pandemic</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Handmade & one of a kind</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">Philly</span>
+          <span class="stat-label">Made right here at home</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Jewelz <span>Ov</span> Clay</div>
+        <p class="footer-tagline">Bold, colorful polymer clay jewelry — handmade in Philadelphia. Because beautiful things deserve to be worn, not just admired.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#shop">All Jewelry</a></li>
+          <li><a href="#shop">Earrings</a></li>
+          <li><a href="#shop">Necklaces</a></li>
+          <li><a href="#shop">Rings</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <ul>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="mailto:hello@jewelzovClay.com">Email Us</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Shipping & Returns</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Jewelz Ov Clay. All rights reserved.</span>
+      <span>Philadelphia, PA</span>
+    </div>
+  </footer>
+
+  <script>
+    // ─── CURSOR ───────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+
+    // ─── PRODUCTS ────────────────────────────────
+    const products = [
+      {
+        id: 1, name: 'Solaris Studs', type: 'Earrings', price: 22,
+        badge: 'Best Seller',
+        colors: ['#E8B84B', '#C9552A', '#2E9E8F'],
+        shape: 'circle'
+      },
+      {
+        id: 2, name: 'Cobalt Drops', type: 'Earrings', price: 28,
+        badge: null,
+        colors: ['#2B4FBE', '#E07070', '#FDF6EC'],
+        shape: 'teardrop'
+      },
+      {
+        id: 3, name: 'Garden Pendant', type: 'Necklace', price: 38,
+        badge: 'New',
+        colors: ['#2E9E8F', '#E8B84B', '#C9552A'],
+        shape: 'flower'
+      },
+      {
+        id: 4, name: 'Mosaic Hoops', type: 'Earrings', price: 32,
+        badge: null,
+        colors: ['#E07070', '#2B4FBE', '#E8B84B'],
+        shape: 'hoop'
+      },
+      {
+        id: 5, name: 'Terra Ring', type: 'Ring', price: 18,
+        badge: 'New',
+        colors: ['#C9552A', '#2E9E8F', '#E8B84B'],
+        shape: 'ring'
+      },
+      {
+        id: 6, name: 'Rainbow Charms', type: 'Necklace', price: 44,
+        badge: null,
+        colors: ['#E8B84B', '#E07070', '#2B4FBE', '#2E9E8F'],
+        shape: 'charm'
+      },
+    ];
+
+    function makeSVG(shape, colors) {
+      const c = colors;
+      switch(shape) {
+        case 'circle':
+          return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+            <circle cx="60" cy="60" r="48" fill="${c[0]}"/>
+            <circle cx="60" cy="60" r="30" fill="${c[1]}"/>
+            <circle cx="60" cy="60" r="16" fill="${c[2]}"/>
+          </svg>`;
+        case 'teardrop':
+          return `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="110" height="120">
+            <path d="M60 10 C20 40 10 80 60 130 C110 80 100 40 60 10Z" fill="${c[0]}"/>
+            <ellipse cx="60" cy="80" rx="22" ry="30" fill="${c[1]}"/>
+            <circle cx="60" cy="30" r="8" fill="${c[2]}"/>
+          </svg>`;
+        case 'flower':
+          return `<svg viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+            <ellipse cx="60" cy="30" rx="18" ry="28" fill="${c[0]}"/>
+            <ellipse cx="90" cy="50" rx="18" ry="28" fill="${c[1]}" transform="rotate(60 90 50)"/>
+            <ellipse cx="90" cy="85" rx="18" ry="28" fill="${c[2]}" transform="rotate(120 90 85)"/>
+            <ellipse cx="60" cy="95" rx="18" ry="28" fill="${c[0]}"/>
+            <ellipse cx="30" cy="85" rx="18" ry="28" fill="${c[1]}" transform="rotate(-120 30 85)"/>
+            <ellipse cx="30" cy="50" rx="18" ry="28" fill="${c[2]}" transform="rotate(-60 30 50)"/>
+            <circle cx="60" cy="62" r="18" fill="${c[0]}"/>
+          </svg>`;
+        case 'hoop':
+          return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="${c[0]}" stroke-width="14"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="${c[1]}" stroke-width="14" stroke-dasharray="40 60" stroke-dashoffset="-10"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="${c[2]}" stroke-width="14" stroke-dasharray="25 75" stroke-dashoffset="35"/>
+          </svg>`;
+        case 'ring':
+          return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+            <rect x="20" y="50" width="80" height="25" rx="12" fill="${c[0]}"/>
+            <rect x="25" y="53" width="25" height="19" rx="6" fill="${c[1]}"/>
+            <rect x="55" y="53" width="25" height="19" rx="6" fill="${c[2]}"/>
+            <circle cx="60" cy="35" r="18" fill="${c[0]}" stroke="${c[1]}" stroke-width="5"/>
+          </svg>`;
+        case 'charm':
+          return `<svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" width="130" height="100">
+            <circle cx="20" cy="50" r="16" fill="${c[0]}"/>
+            <circle cx="55" cy="50" r="16" fill="${c[1]}"/>
+            <circle cx="90" cy="50" r="16" fill="${c[2]}"/>
+            <circle cx="125" cy="50" r="16" fill="${c[3] || c[0]}"/>
+            <line x1="36" y1="50" x2="39" y2="50" stroke="#1A1008" stroke-width="3"/>
+            <line x1="71" y1="50" x2="74" y2="50" stroke="#1A1008" stroke-width="3"/>
+            <line x1="106" y1="50" x2="109" y2="50" stroke="#1A1008" stroke-width="3"/>
+          </svg>`;
+      }
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = products.map(p => `
+        <div class="product-card" data-id="${p.id}">
+          ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+          <div class="product-img" style="background:${p.colors[0]}18">
+            ${makeSVG(p.shape, p.colors)}
+            <div class="product-overlay">
+              <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-type">${p.type}</div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">$${p.price}.00</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ─── CART ────────────────────────────────────
+    let cart = [];
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      const existing = cart.find(i => i.id === id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      updateCart();
+      toggleCart(true);
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(i => i.id !== id);
+      updateCart();
+    }
+
+    function updateCart() {
+      const count = cart.reduce((a, i) => a + i.qty, 0);
+      const total = cart.reduce((a, i) => a + (i.price * i.qty), 0);
+      document.getElementById('cartCount').textContent = count;
+      document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+
+      const itemsEl = document.getElementById('cartItems');
+      const emptyEl = document.getElementById('cartEmpty');
+
+      if (cart.length === 0) {
+        emptyEl.style.display = 'block';
+        // clear any items
+        Array.from(itemsEl.querySelectorAll('.cart-item')).forEach(el => el.remove());
+      } else {
+        emptyEl.style.display = 'none';
+        // re-render cart items
+        Array.from(itemsEl.querySelectorAll('.cart-item')).forEach(el => el.remove());
+        cart.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <div class="cart-item-img" style="background:${item.colors[0]}22">
+              ${makeSVG(item.shape, item.colors).replace('width="120"','width="60"').replace('height="120"','height="60"').replace('width="110"','width="55"').replace('width="130"','width="65"').replace('width="120"','width="60"').replace('width="120"','width="60"').replace('width="130"','width="65"')}
+            </div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">$${item.price}.00 × ${item.qty}</div>
+              <button class="cart-item-remove" onclick="removeFromCart(${item.id})">Remove</button>
+            </div>
+          `;
+          itemsEl.appendChild(div);
+        });
+      }
+    }
+
+    function toggleCart(open) {
+      const sidebar = document.getElementById('cartSidebar');
+      const overlay = document.getElementById('cartOverlay');
+      const isOpen = typeof open === 'boolean' ? open : !sidebar.classList.contains('open');
+      sidebar.classList.toggle('open', isOpen);
+      overlay.classList.toggle('open', isOpen);
+    }
+
+    function checkoutWithPayPal() {
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+      const total = cart.reduce((a, i) => a + (i.price * i.qty), 0);
+      // Replace YOUR_PAYPAL_EMAIL with actual PayPal email
+      const paypalEmail = 'YOUR_PAYPAL_EMAIL@email.com';
+      const items = cart.map(i => `${i.name} x${i.qty}`).join(', ');
+      const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalEmail)}&item_name=${encodeURIComponent('Jewelz Ov Clay: ' + items)}&amount=${total.toFixed(2)}&currency_code=USD&return=https://jewelzovClay.com/thank-you&cancel_return=https://jewelzovClay.com`;
+      window.open(url, '_blank');
+    }
+
+    // ─── INIT ────────────────────────────────────
+    renderProducts();
+    updateCart();
+  </script>
+</body>
+</html>

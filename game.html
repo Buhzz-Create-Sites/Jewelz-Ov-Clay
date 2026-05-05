@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clay Blaster — Secret Game</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Courier New',monospace;overflow:hidden;}
+
+    #gameWrap{position:relative;width:360px;height:640px;overflow:hidden;border:2px solid #E07820;}
+
+    /* STARFIELD */
+    #canvas{position:absolute;inset:0;z-index:0;}
+
+    /* HUD */
+    .hud{position:absolute;top:0;left:0;right:0;z-index:10;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(0,0,0,.8) 0%,transparent 100%);}
+    .hud-score{color:#E8B84B;font-size:.9rem;font-weight:700;letter-spacing:1px;}
+    .hud-lives{color:#E07820;font-size:1rem;letter-spacing:2px;}
+    .hud-power{color:#C47AA0;font-size:.75rem;font-weight:600;}
+
+    /* GAME ELEMENTS */
+    #player{position:absolute;z-index:5;width:48px;height:48px;text-align:center;font-size:2.8rem;line-height:1;transform:translateX(-50%);}
+    .bullet{position:absolute;z-index:4;width:4px;border-radius:2px;background:linear-gradient(#E8B84B,#E07820);}
+    .enemy{position:absolute;z-index:4;text-align:center;line-height:1;transition:none;}
+    .explosion{position:absolute;z-index:6;text-align:center;pointer-events:none;animation:boom .5s ease-out forwards;}
+    @keyframes boom{0%{transform:scale(.5);opacity:1;}100%{transform:scale(2.5);opacity:0;}}
+    .discount-drop{position:absolute;z-index:6;background:#5A1E6E;color:#E8B84B;font-size:.65rem;font-weight:700;letter-spacing:1px;padding:4px 8px;border:1.5px solid #E8B84B;border-radius:2px;white-space:nowrap;}
+    .boss-bar-wrap{position:absolute;bottom:10px;left:14px;right:14px;z-index:10;display:none;}
+    .boss-bar-lbl{color:#ff9f9f;font-size:.65rem;font-weight:700;letter-spacing:1px;margin-bottom:4px;}
+    .boss-bar-bg{background:rgba(255,255,255,.1);height:8px;border-radius:4px;}
+    .boss-bar-fill{background:linear-gradient(90deg,#C0392B,#E07820);height:8px;border-radius:4px;transition:width .2s;}
+
+    /* SCREENS */
+    .screen{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;}
+    #startScreen{background:linear-gradient(180deg,#1A0A00 0%,#3D1050 100%);}
+    #gameOverScreen{background:rgba(26,10,0,.94);display:none;}
+    #winScreen{background:rgba(26,10,0,.94);display:none;}
+    .screen-logo{font-size:2.8rem;margin-bottom:8px;}
+    .screen-title{font-family:'Courier New',monospace;font-size:1.4rem;font-weight:700;color:#E8B84B;letter-spacing:2px;margin-bottom:6px;}
+    .screen-sub{font-size:.75rem;color:rgba(245,237,216,.55);margin-bottom:24px;line-height:1.7;}
+    .screen-btn{background:#E07820;color:white;border:none;padding:14px 32px;font-family:'Courier New',monospace;font-size:.9rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:background .2s;margin-bottom:10px;width:100%;}
+    .screen-btn:hover,.screen-btn:active{background:#C89030;}
+    .screen-btn.secondary{background:rgba(255,255,255,.08);color:rgba(245,237,216,.7);}
+    .score-final{font-size:2.5rem;font-weight:700;color:#E8B84B;margin:16px 0;}
+    .discount-reveal{background:#5A1E6E;border:2px solid #E8B84B;padding:14px 20px;margin:12px 0;border-radius:4px;}
+    .discount-code{font-size:1.4rem;font-weight:700;color:#E8B84B;letter-spacing:3px;}
+    .discount-txt{font-size:.72rem;color:rgba(245,237,216,.6);margin-top:4px;}
+
+    /* MOBILE CONTROLS */
+    .controls{display:flex;justify-content:space-between;align-items:center;width:360px;padding:14px 16px;background:#0A0500;}
+    .ctrl-side{display:flex;gap:8px;}
+    .ctrl-btn{width:52px;height:52px;border-radius:50%;border:2px solid rgba(224,120,32,.4);background:rgba(224,120,32,.1);color:#E07820;font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .1s;}
+    .ctrl-btn:active{background:rgba(224,120,32,.35);}
+    .ctrl-fire{width:64px;height:64px;border-radius:50%;background:rgba(192,57,43,.25);border:2px solid rgba(192,57,43,.6);color:#ff9f9f;font-size:1.6rem;}
+    .ctrl-fire:active{background:rgba(192,57,43,.5);}
+
+    /* CLOSE BTN */
+    .close-game{position:fixed;top:12px;right:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6);width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;}
+  </style>
+</head>
+<body>
+
+<button class="close-game" onclick="window.close()">✕</button>
+
+<div id="gameWrap">
+  <canvas id="canvas" width="360" height="640"></canvas>
+
+  <!-- PLAYER -->
+  <div id="player">💎</div>
+
+  <!-- BOSS HP BAR -->
+  <div class="boss-bar-wrap" id="bossBarWrap">
+    <div class="boss-bar-lbl">BOSS HP</div>
+    <div class="boss-bar-bg"><div class="boss-bar-fill" id="bossBarFill" style="width:100%"></div></div>
+  </div>
+
+  <!-- HUD -->
+  <div class="hud">
+    <div class="hud-score">SCORE: <span id="scoreDisplay">0</span></div>
+    <div class="hud-lives" id="livesDisplay">💎💎💎</div>
+    <div class="hud-power">LVL <span id="levelDisplay">1</span></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen" id="startScreen">
+    <div class="screen-logo">💎</div>
+    <div class="screen-title">CLAY BLASTER</div>
+    <div class="screen-sub">
+      You found the secret! 🎉<br/>
+      Shoot down the clay enemies.<br/>
+      <span style="color:#E8B84B;">Survive to unlock a discount code!</span>
+    </div>
+    <button class="screen-btn" onclick="startGame()">▶ START GAME</button>
+    <div style="font-size:.65rem;color:rgba(245,237,216,.3);margin-top:8px;">Use arrow buttons or keyboard to move · Tap FIRE to shoot</div>
+  </div>
+
+  <!-- GAME OVER -->
+  <div class="screen" id="gameOverScreen">
+    <div class="screen-logo">💔</div>
+    <div class="screen-title">GAME OVER</div>
+    <div class="score-final" id="finalScore">0</div>
+    <div style="font-size:.75rem;color:rgba(245,237,216,.5);margin-bottom:20px;">Keep playing to unlock your discount!</div>
+    <button class="screen-btn" onclick="startGame()">↺ TRY AGAIN</button>
+    <button class="screen-btn secondary" onclick="goBack()">← Back to Shop</button>
+  </div>
+
+  <!-- WIN SCREEN -->
+  <div class="screen" id="winScreen">
+    <div class="screen-logo">🏆</div>
+    <div class="screen-title">YOU WIN!</div>
+    <div class="score-final" id="winScore">0</div>
+    <div class="discount-reveal">
+      <div class="discount-code" id="discountCode">CLAYQUEEN10</div>
+      <div class="discount-txt">10% off your next order!<br/>Enter at checkout on PayPal</div>
+    </div>
+    <button class="screen-btn" onclick="goBack()" style="margin-top:14px;">← Back to Shop</button>
+    <button class="screen-btn secondary" onclick="startGame()">↺ Play Again</button>
+  </div>
+
+</div><!-- end gameWrap -->
+
+<!-- MOBILE CONTROLS -->
+<div class="controls">
+  <div class="ctrl-side">
+    <div class="ctrl-btn" id="btnLeft" ontouchstart="keys.left=true" ontouchend="keys.left=false">◀</div>
+    <div class="ctrl-btn" id="btnRight" ontouchstart="keys.right=true" ontouchend="keys.right=false">▶</div>
+  </div>
+  <div class="ctrl-btn ctrl-fire" ontouchstart="keys.fire=true;fireBullet()" ontouchend="keys.fire=false">🔥</div>
+  <div class="ctrl-side">
+    <div class="ctrl-btn" id="btnUp" ontouchstart="keys.up=true" ontouchend="keys.up=false">▲</div>
+    <div class="ctrl-btn" id="btnDown" ontouchstart="keys.down=true" ontouchend="keys.down=false">▼</div>
+  </div>
+</div>
+
+<script>
+  // ── CONFIG ──
+  const W=360, H=640;
+  const PLAYER_SPEED=4;
+  const BULLET_SPEED=9;
+  const FIRE_RATE=180; // ms between shots
+
+  // ── ENEMY TYPES — customize these emojis to use your own images ──
+  const ENEMY_TYPES=[
+    {emoji:'🧶',hp:1,pts:10,size:32,speed:1.2},
+    {emoji:'🪩',hp:1,pts:15,size:28,speed:1.6},
+    {emoji:'💜',hp:2,pts:25,size:34,speed:1.0},
+    {emoji:'🌀',hp:3,pts:40,size:36,speed:.8},
+  ];
+  const BOSS={emoji:'👑',hp:50,pts:500,size:64,speed:.6};
+
+  // ── STATE ──
+  let score=0,lives=3,level=1,gameRunning=false;
+  let playerX=W/2,playerY=H-80;
+  let bullets=[],enemies=[],drops=[],explosions=[];
+  let keys={left:false,right:false,up:false,down:false,fire:false};
+  let lastFire=0,lastEnemySpawn=0,frameId=null;
+  let bossActive=false,bossEl=null,bossHp=BOSS.hp;
+  let killCount=0,killsForBoss=15;
+  let discountCodes=['CLAYQUEEN10','JOC15OFF','JEWELZ20'];
+
+  // ── CANVAS STARFIELD ──
+  const canvas=document.getElementById('canvas');
+  const ctx=canvas.getContext('2d');
+  let stars=Array.from({length:80},()=>({x:Math.random()*W,y:Math.random()*H,speed:.5+Math.random()*2,size:.5+Math.random()*1.5,opacity:.3+Math.random()*.7}));
+
+  function drawStars(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#000';
+    ctx.fillRect(0,0,W,H);
+    stars.forEach(s=>{
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,237,216,${s.opacity})`;
+      ctx.fill();
+      s.y+=s.speed;
+      if(s.y>H){s.y=0;s.x=Math.random()*W;}
+    });
+  }
+
+  // ── PLAYER ──
+  const playerEl=document.getElementById('player');
+  function updatePlayer(){
+    if(keys.left)playerX=Math.max(24,playerX-PLAYER_SPEED);
+    if(keys.right)playerX=Math.min(W-24,playerX+PLAYER_SPEED);
+    if(keys.up)playerY=Math.max(80,playerY-PLAYER_SPEED);
+    if(keys.down)playerY=Math.min(H-40,playerY+PLAYER_SPEED);
+    playerEl.style.left=playerX+'px';
+    playerEl.style.top=playerY+'px';
+  }
+
+  // ── BULLETS ──
+  function fireBullet(){
+    if(!gameRunning)return;
+    const now=Date.now();
+    if(now-lastFire<FIRE_RATE)return;
+    lastFire=now;
+    const b=document.createElement('div');
+    b.className='bullet';
+    b.style.cssText=`left:${playerX-2}px;top:${playerY-20}px;height:${level>=3?18:12}px;width:${level>=3?5:3}px;`;
+    document.getElementById('gameWrap').appendChild(b);
+    bullets.push({el:b,x:playerX,y:playerY-20,speed:BULLET_SPEED+(level*.5)});
+    if(level>=2){
+      // spread shot
+      [-12,12].forEach(offset=>{
+        const b2=document.createElement('div');
+        b2.className='bullet';
+        b2.style.cssText=`left:${playerX+offset-2}px;top:${playerY-10}px;height:10px;width:3px;opacity:.7;`;
+        document.getElementById('gameWrap').appendChild(b2);
+        bullets.push({el:b2,x:playerX+offset,y:playerY-10,speed:BULLET_SPEED,angle:offset/80});
+      });
+    }
+  }
+
+  function updateBullets(){
+    bullets=bullets.filter(b=>{
+      b.y-=b.speed;
+      if(b.angle)b.x+=b.angle*b.speed;
+      b.el.style.top=b.y+'px';
+      b.el.style.left=b.x+'px';
+      if(b.y<-20){b.el.remove();return false;}
+      return true;
+    });
+  }
+
+  // ── ENEMIES ──
+  function spawnEnemy(){
+    if(bossActive)return;
+    const type=ENEMY_TYPES[Math.floor(Math.random()*Math.min(level+1,ENEMY_TYPES.length))];
+    const x=type.size/2+Math.random()*(W-type.size);
+    const e=document.createElement('div');
+    e.className='enemy';
+    e.style.cssText=`font-size:${type.size}px;left:${x}px;top:-${type.size}px;`;
+    e.textContent=type.emoji;
+    document.getElementById('gameWrap').appendChild(e);
+    enemies.push({el:e,x,y:-type.size,hp:type.hp,maxHp:type.hp,pts:type.pts,speed:type.speed+(level*.1),size:type.size,wobble:Math.random()*Math.PI*2,wobbleSpeed:.03+Math.random()*.02});
+  }
+
+  function spawnBoss(){
+    bossActive=true;
+    bossHp=BOSS.hp+(level*10);
+    document.getElementById('bossBarWrap').style.display='block';
+    document.getElementById('bossBarFill').style.width='100%';
+    const e=document.createElement('div');
+    e.className='enemy';
+    e.style.cssText=`font-size:${BOSS.size}px;left:${W/2}px;top:-${BOSS.size}px;`;
+    e.textContent=BOSS.emoji;
+    document.getElementById('gameWrap').appendChild(e);
+    bossEl={el:e,x:W/2,y:-BOSS.size,hp:bossHp,maxHp:bossHp,pts:BOSS.pts,speed:BOSS.speed,size:BOSS.size,wobble:0,wobbleSpeed:.02,isBoss:true};
+    enemies.push(bossEl);
+  }
+
+  function updateEnemies(){
+    const now=Date.now();
+    if(!bossActive&&now-lastEnemySpawn>Math.max(600,1400-level*120)){
+      spawnEnemy();lastEnemySpawn=now;
+    }
+    enemies=enemies.filter(e=>{
+      e.wobble+=e.wobbleSpeed;
+      e.y+=e.speed;
+      if(!e.isBoss)e.x+=Math.sin(e.wobble)*2;
+      else{
+        // boss moves side to side
+        e.x=W/2+Math.sin(e.wobble*0.5)*120;
+        if(e.y<80)e.y+=e.speed;
+      }
+      e.el.style.top=e.y+'px';
+      e.el.style.left=e.x+'px';
+      // off screen
+      if(e.y>H+e.size){e.el.remove();return false;}
+      // hit player
+      const dx=Math.abs(e.x-playerX),dy=Math.abs(e.y-playerY);
+      if(dx<28&&dy<28){e.el.remove();playerHit();return false;}
+      return true;
+    });
+  }
+
+  // ── COLLISION ──
+  function checkCollisions(){
+    for(let i=bullets.length-1;i>=0;i--){
+      const b=bullets[i];
+      for(let j=enemies.length-1;j>=0;j--){
+        const e=enemies[j];
+        const dx=Math.abs(b.x-e.x),dy=Math.abs(b.y-e.y);
+        if(dx<e.size/2+4&&dy<e.size/2+4){
+          b.el.remove();bullets.splice(i,1);
+          e.hp--;
+          if(e.isBoss){
+            const pct=(e.hp/e.maxHp)*100;
+            document.getElementById('bossBarFill').style.width=pct+'%';
+          }
+          if(e.hp<=0){
+            explode(e.x,e.y,e.size);
+            score+=e.pts*(level);
+            document.getElementById('scoreDisplay').textContent=score;
+            e.el.remove();enemies.splice(j,1);
+            if(e.isBoss){
+              bossActive=false;
+              document.getElementById('bossBarWrap').style.display='none';
+              bossEl=null;
+              level++;
+              document.getElementById('levelDisplay').textContent=level;
+              killCount=0;
+              if(level>3)winGame();
+            } else {
+              killCount++;
+              if(Math.random()<.15)spawnDrop(e.x,e.y);
+              if(killCount>=killsForBoss)spawnBoss();
+            }
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  // ── DROPS ──
+  function spawnDrop(x,y){
+    const codes=['10% OFF','FREE SHIP','BONUS'];
+    const d=document.createElement('div');
+    d.className='discount-drop';
+    d.textContent='★ BONUS ★';
+    d.style.cssText=`left:${x}px;top:${y}px;`;
+    document.getElementById('gameWrap').appendChild(d);
+    drops.push({el:d,x,y,speed:1.5});
+  }
+
+  function updateDrops(){
+    drops=drops.filter(d=>{
+      d.y+=d.speed;
+      d.el.style.top=d.y+'px';
+      const dx=Math.abs(d.x-playerX),dy=Math.abs(d.y-playerY);
+      if(dx<40&&dy<20){d.el.remove();score+=50;document.getElementById('scoreDisplay').textContent=score;return false;}
+      if(d.y>H+20){d.el.remove();return false;}
+      return true;
+    });
+  }
+
+  // ── EXPLOSIONS ──
+  function explode(x,y,size){
+    const e=document.createElement('div');
+    e.className='explosion';
+    e.style.cssText=`left:${x}px;top:${y}px;font-size:${size*1.2}px;`;
+    e.textContent='💥';
+    document.getElementById('gameWrap').appendChild(e);
+    setTimeout(()=>e.remove(),500);
+  }
+
+  // ── PLAYER HIT ──
+  function playerHit(){
+    lives--;
+    const livesStr='💎'.repeat(Math.max(0,lives));
+    document.getElementById('livesDisplay').textContent=livesStr||'☠️';
+    explode(playerX,playerY,48);
+    if(lives<=0){setTimeout(()=>gameOver(),400);return;}
+    // flash
+    playerEl.style.opacity='.2';
+    setTimeout(()=>playerEl.style.opacity='1',800);
+  }
+
+  // ── GAME LOOP ──
+  function gameLoop(){
+    if(!gameRunning)return;
+    drawStars();
+    updatePlayer();
+    updateBullets();
+    updateEnemies();
+    checkCollisions();
+    updateDrops();
+    frameId=requestAnimationFrame(gameLoop);
+  }
+
+  // ── START / END ──
+  function startGame(){
+    // clear old elements
+    document.querySelectorAll('.bullet,.enemy,.explosion,.discount-drop').forEach(e=>e.remove());
+    bullets=[];enemies=[];drops=[];
+    score=0;lives=3;level=1;killCount=0;bossActive=false;bossEl=null;
+    playerX=W/2;playerY=H-80;
+    lastFire=0;lastEnemySpawn=0;
+    document.getElementById('scoreDisplay').textContent='0';
+    document.getElementById('livesDisplay').textContent='💎💎💎';
+    document.getElementById('levelDisplay').textContent='1';
+    document.getElementById('bossBarWrap').style.display='none';
+    document.getElementById('startScreen').style.display='none';
+    document.getElementById('gameOverScreen').style.display='none';
+    document.getElementById('winScreen').style.display='none';
+    gameRunning=true;
+    if(frameId)cancelAnimationFrame(frameId);
+    gameLoop();
+    // auto fire on mobile hold
+    setInterval(()=>{if(keys.fire&&gameRunning)fireBullet();},FIRE_RATE);
+  }
+
+  function gameOver(){
+    gameRunning=false;
+    cancelAnimationFrame(frameId);
+    document.getElementById('finalScore').textContent=score.toLocaleString();
+    document.getElementById('gameOverScreen').style.display='flex';
+  }
+
+  function winGame(){
+    gameRunning=false;
+    cancelAnimationFrame(frameId);
+    const code=discountCodes[Math.floor(Math.random()*discountCodes.length)];
+    document.getElementById('discountCode').textContent=code;
+    document.getElementById('winScore').textContent=score.toLocaleString();
+    document.getElementById('winScreen').style.display='flex';
+  }
+
+  function goBack(){
+    window.location.href='index.html';
+  }
+
+  // ── KEYBOARD ──
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowLeft')keys.left=true;
+    if(e.key==='ArrowRight')keys.right=true;
+    if(e.key==='ArrowUp')keys.up=true;
+    if(e.key==='ArrowDown')keys.down=true;
+    if(e.key===' '||e.key==='z'||e.key==='Z'){e.preventDefault();fireBullet();}
+  });
+  document.addEventListener('keyup',e=>{
+    if(e.key==='ArrowLeft')keys.left=false;
+    if(e.key==='ArrowRight')keys.right=false;
+    if(e.key==='ArrowUp')keys.up=false;
+    if(e.key==='ArrowDown')keys.down=false;
+    if(e.key===' '||e.key==='z')keys.fire=false;
+  });
+</script>
+</body>
+</html>

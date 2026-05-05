@@ -190,6 +190,32 @@
     }
     .section-title em { font-style: italic; color: var(--gold-light); }
 
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 48px;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(201,124,42,0.35);
+      color: rgba(245,237,224,0.65);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+    .filter-btn.active { background: var(--purple); border-color: var(--purple); color: var(--cream); }
+
     /* ── PRODUCT GRID ── */
     .product-grid {
       display: grid;
@@ -555,6 +581,8 @@
       <h2 class="section-title">Every Piece is <em>One of One</em></h2>
     </div>
 
+    <div class="filter-bar" id="filterBar"></div>
+
     <div class="product-grid" id="productGrid">
       <!-- Products are rendered by JavaScript below -->
     </div>
@@ -650,74 +678,140 @@
     const PAYPAL_EMAIL = "YOUR_PAYPAL_EMAIL@gmail.com"; // ← REPLACE THIS
 
     const products = [
-      {
-        id: 1,
-        name: "Neon Orbit Drops",
-        price: 30,
-        image: "images/IMG_2490.jpeg",
-        desc: "Swirling pink, green and gold clay hoops cascade from a trail of mixed crystal beads. Feels like wearing a galaxy.",
-        soldOut: false
-      },
-      {
-        id: 2,
-        name: "Peace & Poison Diamonds",
-        price: 30,
-        image: "images/IMG_2526.jpeg",
-        desc: "Bold diamond shaped clay pendants in black, purple and electric green with a silver peace sign charm mid chain. Retro energy meets raw art.",
-        soldOut: false
-      },
-      {
-        id: 3,
-        name: "Rainbow Riot Hoops",
-        price: 30,
-        image: "images/IMG_2531.jpeg",
-        desc: "Full spectrum color blast on oversized clay circle drops with rainbow crystal bead chains. Joyful, loud and unapologetic.",
-        soldOut: false
-      },
-      {
-        id: 4,
-        name: "Hex Venom Drops",
-        price: 30,
-        image: "images/IMG_2547.jpeg",
-        desc: "Hexagon clay pendants swirled in purple and lime green with mixed frosted and jewel tone bead chains. Like nature designed something wild.",
-        soldOut: false
-      },
-      {
-        id: 5,
-        name: "Cosmic Hex Glow",
-        price: 30,
-        image: "images/IMG_2549.jpeg",
-        desc: "Hexagon hoops in neon pink, purple and green with galaxy dot detailing, paired with a long cascading bead chain of purples and greens. These catch every light in the room.",
-        soldOut: false
-      },
-      // ── Add more pieces following the same pattern ──
-      // { id: 6, name: "Piece Name", price: 30, image: "images/IMG_XXXX.jpeg", desc: "Description.", soldOut: false },
+      // ── HOOP & CIRCLE DROPS ──
+      { id: 1,  name: "Neon Orbit Drops",         price: 30, image: "images/IMG_2490.jpeg", category: "Hoops & Circles", desc: "Swirling pink, green and gold clay hoops cascade from a trail of mixed crystal beads. Feels like wearing a galaxy.", soldOut: false },
+      { id: 2,  name: "Prism Storm Hoops",        price: 30, image: "images/IMG_2492.jpeg", category: "Hoops & Circles", desc: "Oversized clay orbit hoops in electric pink, purple and green glitter swirls. Long bead chain with crackle and stone accents.", soldOut: false },
+      { id: 3,  name: "Velvet Swirl Hoops",       price: 30, image: "images/IMG_2493.jpeg", category: "Hoops & Circles", desc: "Pink and purple marbled clay hoops with a long mixed bead cascade. Soft energy with bold presence.", soldOut: false },
+      { id: 4,  name: "Galaxy Melt Hoops",        price: 30, image: "images/IMG_2494.jpeg", category: "Hoops & Circles", desc: "Pink, green and black galaxy swirl clay hoops dripping from a chain of purple and crackle beads.", soldOut: false },
+      { id: 5,  name: "Acid Rain Hoops",          price: 30, image: "images/IMG_2495.jpeg", category: "Hoops & Circles", desc: "Five variations of the same bold hoop silhouette in pink, purple and lime. Each one slightly different like nature intended.", soldOut: false },
+      { id: 6,  name: "Rainbow Riot Hoops",       price: 30, image: "images/IMG_2531.jpeg", category: "Hoops & Circles", desc: "Full spectrum color blast on oversized clay circle drops with rainbow crystal bead chains. Joyful, loud and unapologetic.", soldOut: false },
+      { id: 7,  name: "Citrus Orbit Hoops",       price: 30, image: "images/IMG_2532.jpeg", category: "Hoops & Circles", desc: "Rainbow stained clay circles with full spectrum bead chains. These are the ones people stop you to ask about.", soldOut: false },
+      { id: 8,  name: "Solstice Hoops",           price: 30, image: "images/IMG_2534.jpeg", category: "Hoops & Circles", desc: "Rainbow mosaic clay circles with full spectrum crystal beads descending from a clay coin topper. Earthy and electric at once.", soldOut: false },
+      { id: 9,  name: "Spectrum Spin Hoops",      price: 30, image: "images/IMG_2535.jpeg", category: "Hoops & Circles", desc: "Rainbow clay circles with mismatched full spectrum bead chains. No two sides match and that is exactly the point.", soldOut: false },
+      { id: 10, name: "Twilight Circle Drops",    price: 30, image: "images/IMG_2539.jpeg", category: "Hoops & Circles", desc: "Purple and green patterned clay circles suspended from gold hoop connectors and a mixed bead chain. Dusk in earring form.", soldOut: false },
+      { id: 11, name: "Mardi Glo Hoops",          price: 30, image: "images/IMG_2540.jpeg", category: "Hoops & Circles", desc: "Pink, purple and lime clay circles with gold hoop accents and a mixed crystal bead chain. Festival ready.", soldOut: false },
+
+      // ── TEARDROP DROPS ──
+      { id: 12, name: "Alien Jungle Teardrops",   price: 30, image: "images/IMG_2868.jpeg", category: "Teardrops", desc: "Purple and lime green teardrop clay pendants with skull bead accents and mixed stone chains. Dark beauty with a wild heart.", soldOut: false },
+      { id: 13, name: "Midnight Bloom Teardrops", price: 30, image: "images/IMG_2856.jpeg", category: "Teardrops", desc: "Deep blue and green galaxy clay teardrops with silver skull charms and layered crystal bead chains.", soldOut: false },
+      { id: 14, name: "Violet Rain Teardrops",    price: 30, image: "images/IMG_2868.jpeg", category: "Teardrops", desc: "Purple, green and black swirl teardrops with mixed purple and lime bead chains. Long and dramatic.", soldOut: false },
+      { id: 15, name: "Poison Garden Teardrops",  price: 30, image: "images/IMG_2873.jpeg", category: "Teardrops", desc: "Neon green and purple teardrop clay drops with long beaded chains of frosted and jewel tone beads. Eerily beautiful.", soldOut: false },
+      { id: 16, name: "Nebula Teardrops",         price: 30, image: "images/IMG_2867.jpeg", category: "Teardrops", desc: "Purple, green and black marbled clay teardrops with pink and mint bead chains. Like holding a piece of the night sky.", soldOut: false },
+      { id: 17, name: "Aurora Teardrops",         price: 30, image: "images/IMG_2881.jpeg", category: "Teardrops", desc: "Iridescent pink and yellow swirl teardrops with soft pastel bead chains. Dreamy and luminous.", soldOut: false },
+      { id: 18, name: "Cosmic Drift Teardrops",   price: 30, image: "images/IMG_2882.jpeg", category: "Teardrops", desc: "Pink and purple iridescent swirl teardrops with mixed blue and purple crackle bead chains. Pure shimmer.", soldOut: false },
+      { id: 19, name: "Snakeskin Teardrops",      price: 30, image: "images/IMG_2886.jpeg", category: "Teardrops", desc: "Purple and green reptile patterned clay teardrops with mixed dark bead chains. Edgy and unforgettable.", soldOut: false },
+      { id: 20, name: "Peacock Teardrops",        price: 30, image: "images/IMG_2887.jpeg", category: "Teardrops", desc: "Green and purple peacock patterned clay teardrops on gold oval studs with layered crystal beads.", soldOut: false },
+      { id: 21, name: "Venom Scale Teardrops",    price: 30, image: "images/IMG_2889.jpeg", category: "Teardrops", desc: "Purple and green scale patterned clay teardrops with silver oval studs and mixed crystal chain.", soldOut: false },
+      { id: 22, name: "Eclipse Teardrops",        price: 30, image: "images/IMG_2890.jpeg", category: "Teardrops", desc: "Dark scale patterned teardrops in purple and green with black and lime bead accents.", soldOut: false },
+      { id: 23, name: "Mango Swirl Teardrops",    price: 30, image: "images/IMG_2873.jpeg", category: "Teardrops", desc: "Bright citrus and rainbow swirl teardrops hanging from silver ball studs with gold hoop and rainbow crystals inside.", soldOut: false },
+      { id: 24, name: "Tropics Teardrops",        price: 30, image: "images/IMG_2875.jpeg", category: "Teardrops", desc: "Full spectrum rainbow swirl clay teardrops with gold ball studs and rainbow crystal hoop accents.", soldOut: false },
+      { id: 25, name: "Prism Fall Teardrops",     price: 30, image: "images/IMG_2876.jpeg", category: "Teardrops", desc: "Rainbow mosaic teardrops with gold ball studs and mixed rainbow crystal hoop inserts.", soldOut: false },
+
+      // ── HEXAGON DROPS ──
+      { id: 26, name: "Hex Venom Drops",          price: 30, image: "images/IMG_2547.jpeg", category: "Hexagons", desc: "Hexagon clay pendants swirled in purple and lime green with mixed frosted and jewel tone bead chains.", soldOut: false },
+      { id: 27, name: "Cosmic Hex Glow",          price: 30, image: "images/IMG_2549.jpeg", category: "Hexagons", desc: "Hexagon hoops in neon pink, purple and green with galaxy dot detailing and long cascading bead chains.", soldOut: false },
+      { id: 28, name: "Hex Jungle",               price: 30, image: "images/IMG_2546.jpeg", category: "Hexagons", desc: "Purple and green hexagon hoops with long chains of black, purple and lime beads. Deep and wild.", soldOut: false },
+      { id: 29, name: "Toxic Hex",                price: 30, image: "images/IMG_2548.jpeg", category: "Hexagons", desc: "Green and purple hexagon pendants with mixed black and purple bead chains. Bold and dangerous looking.", soldOut: false },
+      { id: 30, name: "Hex Galaxy",               price: 30, image: "images/IMG_2550.jpeg", category: "Hexagons", desc: "Pink, purple and green hexagon hoops with mixed soft bead chains. Feminine power.", soldOut: false },
+      { id: 31, name: "Neon Hex Storm",           price: 30, image: "images/IMG_2552.jpeg", category: "Hexagons", desc: "Bright pink and lime hexagon drops with long chains of mixed frosted and glitter beads.", soldOut: false },
+
+      // ── DIAMOND DROPS ──
+      { id: 32, name: "Peace & Poison Diamonds",  price: 30, image: "images/IMG_2526.jpeg", category: "Diamonds", desc: "Bold diamond clay pendants in black, purple and electric green with a silver peace sign charm mid chain.", soldOut: false },
+      { id: 33, name: "Jungle Diamond",           price: 30, image: "images/IMG_2527.jpeg", category: "Diamonds", desc: "Green and purple diamond clay drops with a silver peace sign accent and layered bead chain.", soldOut: false },
+      { id: 34, name: "Starfall Diamonds",        price: 30, image: "images/IMG_2541.jpeg", category: "Diamonds", desc: "Rainbow mosaic diamond clay drops with gold star charms and full spectrum crystal bead chains.", soldOut: false },
+      { id: 35, name: "Solar Flare Diamonds",     price: 30, image: "images/IMG_2542.jpeg", category: "Diamonds", desc: "Iridescent swirl diamond drops with gold star charms and rainbow crystal bead accents.", soldOut: false },
+      { id: 36, name: "Nova Diamonds",            price: 30, image: "images/IMG_2543.jpeg", category: "Diamonds", desc: "Rainbow swirl diamonds with gold star chain accents and a gold fan charm base. Statement from top to bottom.", soldOut: false },
+      { id: 37, name: "Prism Star Diamonds",      price: 30, image: "images/IMG_2544.jpeg", category: "Diamonds", desc: "Vivid mosaic diamond clay drops with gold star charms and rainbow bead chains ending in gold fan charms.", soldOut: false },
+      { id: 38, name: "Spectrum Diamonds",        price: 30, image: "images/IMG_2545.jpeg", category: "Diamonds", desc: "Multicolor swirl clay diamonds with gold stars and rainbow crystals cascading to a golden fan finish.", soldOut: false },
+
+      // ── HEART DROPS ──
+      { id: 39, name: "Rainbow Heart Chain",      price: 30, image: "images/IMG_2499.jpeg", category: "Hearts", desc: "Three rainbow clay hearts linked by silver rings with an evil eye bead accent mid chain. Love and protection combined.", soldOut: false },
+      { id: 40, name: "Poison Heart Chain",       price: 30, image: "images/IMG_2508.jpeg", category: "Hearts", desc: "Purple and green clay hearts stacked with gold rings and an evil eye charm. Dark romance.", soldOut: false },
+      { id: 41, name: "Neon Heart Stack",         price: 30, image: "images/IMG_2513.jpeg", category: "Hearts", desc: "Pink and green clay hearts cascading from gold rings with a protective evil eye mid charm.", soldOut: false },
+      { id: 42, name: "Jungle Heart Drop",        price: 30, image: "images/IMG_2514.jpeg", category: "Hearts", desc: "Three stacked clay hearts in pink, purple and green with silver rings and an evil eye charm.", soldOut: false },
+      { id: 43, name: "Electric Heart Stack",     price: 30, image: "images/IMG_2516.jpeg", category: "Hearts", desc: "Pink and green marbled clay heart stacks with silver ring links and protective evil eye accents.", soldOut: false },
+      { id: 44, name: "Glitter Heart Chain",      price: 30, image: "images/IMG_2517.jpeg", category: "Hearts", desc: "Gold toned heart chain with three clay hearts in neon pink, purple and lime. Long and luminous.", soldOut: false },
+      { id: 45, name: "Cosmic Heart Drop",        price: 30, image: "images/IMG_2518.jpeg", category: "Hearts", desc: "Three marbled clay hearts in pink, green and purple on gold rings with a protective eye bead.", soldOut: false },
+
+      // ── SKULL DROPS ──
+      { id: 46, name: "Green Skull Threaders",    price: 30, image: "images/IMG_3606.jpeg", category: "Skulls", desc: "Long chain threader earrings with lime green skull beads and a clay disc pendant. Subtle until you look closer.", soldOut: false },
+      { id: 47, name: "Blue Skull Threads",       price: 30, image: "images/IMG_3615.jpeg", category: "Skulls", desc: "Silver chain threaders with blue skull beads, crackle stone accents and a clay heart pendant below. Haunting and sweet.", soldOut: false },
+      { id: 48, name: "Skull & Bone Threads",     price: 30, image: "images/IMG_3616.jpeg", category: "Skulls", desc: "Silver threader earrings featuring blue skull beads and vivid rainbow clay heart pendants.", soldOut: false },
+      { id: 49, name: "Silver Skull Drops",       price: 30, image: "images/IMG_2856.jpeg", category: "Skulls", desc: "Silver skull charm beads stacked above deep blue galaxy teardrops with crystal chains.", soldOut: false },
+      { id: 50, name: "Skull & Soul Drops",       price: 30, image: "images/IMG_2873.jpeg", category: "Skulls", desc: "Silver skull accents with purple crystal beads and clay teardrop pendants in blue galaxy swirl.", soldOut: false },
+      { id: 51, name: "Ghost Skull Threaders",    price: 30, image: "images/IMG_3592.jpeg", category: "Skulls", desc: "Long silver chain threaders with green skull beads, purple spacers and a purple and green clay disc drop.", soldOut: false },
+      { id: 52, name: "Skull Chain Threaders",    price: 30, image: "images/IMG_3607.jpeg", category: "Skulls", desc: "Silver chain threaders with green skull beads in multiple colorways and clay coin pendants below.", soldOut: false },
+      { id: 53, name: "Day of the Dead Threads",  price: 30, image: "images/IMG_2879.jpeg", category: "Skulls", desc: "Gold chain threaders with green skull beads, rainbow crystals and a clay heart pendant drop.", soldOut: false },
+
+      // ── EVIL EYE ──
+      { id: 54, name: "Evil Eye Stacked Drops",   price: 30, image: "images/IMG_3592.jpeg", category: "Evil Eye", desc: "Three stacked clay discs with an evil eye charm between them on blue ball studs. Watchful and stunning.", soldOut: false },
+      { id: 55, name: "Evil Eye Circle Stack",    price: 30, image: "images/IMG_3601.jpeg", category: "Evil Eye", desc: "Clay coin stack earrings with an evil eye charm centered between two marbled clay discs.", soldOut: false },
+      { id: 56, name: "Triple Eye Drops",         price: 30, image: "images/IMG_3602.jpeg", category: "Evil Eye", desc: "Three clay discs with an evil eye between each layer. Bold protection in earring form.", soldOut: false },
+      { id: 57, name: "Evil Eye Gaze",            price: 30, image: "images/IMG_3603.jpeg", category: "Evil Eye", desc: "Stacked clay coin drops with centered evil eye charm. Minimal profile, maximum energy.", soldOut: false },
+
+      // ── THREADER CHAINS ──
+      { id: 58, name: "Purple Heart Threaders",   price: 30, image: "images/IMG_3611.jpeg", category: "Threaders", desc: "Long silver chain threaders with purple and green beads ending in a purple and green clay heart pendant.", soldOut: false },
+      { id: 59, name: "Gold Heart Threaders",     price: 30, image: "images/IMG_3612.jpeg", category: "Threaders", desc: "Gold chain threaders with black, purple and green bead accents and a glittery clay heart pendant drop.", soldOut: false },
+      { id: 60, name: "Rainbow Thread Drops",     price: 30, image: "images/IMG_3617.jpeg", category: "Threaders", desc: "Silver chain threaders with full rainbow crystal bead chains and vivid clay circle pendants.", soldOut: false },
+      { id: 61, name: "Violet Orbit Threaders",   price: 30, image: "images/IMG_3618.jpeg", category: "Threaders", desc: "Silver chain threaders with purple and green bead chains and a purple and green clay disc drop.", soldOut: false },
+      { id: 62, name: "Galaxy Thread Drops",      price: 30, image: "images/IMG_3619.jpeg", category: "Threaders", desc: "Long chain threaders with mixed dark and bright bead chains ending in iridescent clay pendants.", soldOut: false },
+      { id: 63, name: "Midnight Threaders",       price: 30, image: "images/IMG_3620.jpeg", category: "Threaders", desc: "Silver threaders with green, black and purple bead chains ending in a swirled purple and green clay disc.", soldOut: false },
+      { id: 64, name: "Stardust Threaders",       price: 30, image: "images/IMG_3621.jpeg", category: "Threaders", desc: "Long chain threaders in multiple colorways with skull beads, rainbow crystals and clay pendants.", soldOut: false },
+
+      // ── NECKLACES ──
+      { id: 65, name: "Solar Diamond Pendant",    price: 30, image: "images/IMG_6335.jpeg", category: "Necklaces", desc: "Bold orange and green swirled clay diamond pendant on a black cord choker. Grounded and striking.", soldOut: false },
+      { id: 66, name: "Crimson Leaf Pendant",     price: 30, image: "images/IMG_6336.jpeg", category: "Necklaces", desc: "Handformed clay maple leaf in rich red and gold tones on a silver cord necklace. Wearable art for every season.", soldOut: false },
+      { id: 67, name: "Silver Scales Pendant",    price: 30, image: "images/IMG_6337.jpeg", category: "Necklaces", desc: "Monochromatic silver and grey scale patterned clay teardrop on a silver cord. Understated but unforgettable.", soldOut: false },
     ];
+
+    // ── CATEGORY FILTERS ──
+    const categories = ['All', ...new Set(products.map(p => p.category))];
+    const filterBar = document.getElementById('filterBar');
+    let activeCategory = 'All';
+
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+      btn.textContent = cat;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = cat;
+        renderGrid();
+      });
+      filterBar.appendChild(btn);
+    });
 
     // ── RENDER GRID ──
     const grid = document.getElementById('productGrid');
 
-    products.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}" loading="lazy" />
-        <div class="product-info-bar">
-          <div class="product-name">${p.name}</div>
-          <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 ship</span></div>
-        </div>
-        <div class="product-overlay">
-          <div class="product-name">${p.name}</div>
-          <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 shipping</span></div>
-          ${p.soldOut
-            ? `<button class="btn-buy" disabled style="opacity:0.4;cursor:not-allowed;">Sold Out</button>`
-            : `<button class="btn-buy" onclick="openModal(${p.id})">Buy This Piece</button>`
-          }
-        </div>
-        ${p.soldOut ? `<div class="sold-out-badge">Sold Out</div>` : ''}
-      `;
-      grid.appendChild(card);
-    });
+    function renderGrid() {
+      grid.innerHTML = '';
+      const filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          <div class="product-info-bar">
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 ship</span></div>
+          </div>
+          <div class="product-overlay">
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 shipping</span></div>
+            ${p.soldOut
+              ? `<button class="btn-buy" disabled style="opacity:0.4;cursor:not-allowed;">Sold Out</button>`
+              : `<button class="btn-buy" onclick="openModal(${p.id})">Buy This Piece</button>`
+            }
+          </div>
+          ${p.soldOut ? `<div class="sold-out-badge">Sold Out</div>` : ''}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    renderGrid();
 
     // ── MODAL ──
     let currentProduct = null;

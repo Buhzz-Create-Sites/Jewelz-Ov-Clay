@@ -108,9 +108,6 @@
     .footer-bottom { border-top: 1px solid rgba(245,237,224,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .footer-bottom p { font-size: 0.75rem; color: rgba(245,237,224,0.35); }
 
-    /* Easter egg trigger */
-    #eggTrigger { cursor: default; user-select: none; }
-
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
@@ -206,7 +203,7 @@
     </div>
     <div class="footer-bottom">
       <p>© 2025 Jewelz Ov Clay. All rights reserved. Philadelphia, PA.</p>
-      <p id="eggTrigger" onclick="eggClick()">Handmade with love ✦</p>
+      <p >Handmade with love ✦</p>
     </div>
   </footer>
 
@@ -428,17 +425,6 @@
       container.appendChild(note);
     }
 
-    // ── EASTER EGG (7 clicks on footer text) ──
-    let eggClicks = 0, eggTimer = null;
-    function eggClick() {
-      eggClicks++;
-      clearTimeout(eggTimer);
-      if (eggClicks >= 7) {
-        eggClicks = 0;
-        window.open('game.html', '_blank', 'width=420,height=760');
-      }
-      eggTimer = setTimeout(() => eggClicks = 0, 3000);
-    }
   </script>
 </body>
 </html>

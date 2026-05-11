@@ -1,703 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Clay Blaster — Secret Game</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Jewelz Ov Clay — Bold handmade polymer clay jewelry from Philadelphia. One of a kind. Never repeated."/>
+  <meta name="keywords" content="polymer clay jewelry, handmade jewelry, Philadelphia, clay earrings, bold jewelry"/>
+  <title>Jewelz Ov Clay — Handmade in Philadelphia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+    :root {
+      --purple: #4a1a6b; --purple-mid: #6b2d8b;
+      --gold: #c97c2a; --gold-light: #e8a84a;
+      --cream: #f5ede0; --dark: #1a0f0a;
+      --charcoal: #2c1f18; --text-dark: #1e1208; --text-mid: #5c3d28;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--cream); overflow-x: hidden; }
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Courier New', monospace;
-      user-select: none;
-      -webkit-user-select: none;
-    }
+    .announce { background: var(--purple); text-align: center; padding: 10px 20px; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); }
+    .announce a { color: var(--gold-light); text-decoration: none; font-weight: 500; }
 
-    #gameWrap {
-      position: relative;
-      width: 360px;
-      height: 580px;
-      overflow: hidden;
-      border: 2px solid #E07820;
-      flex-shrink: 0;
-    }
+    nav { background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 72px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(201,124,42,0.15); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; }
+    .nav-logo span { color: var(--cream); font-style: italic; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); text-decoration: none; opacity: 0.85; transition: color 0.2s, opacity 0.2s; }
+    .nav-links a:hover { color: var(--gold-light); opacity: 1; }
 
-    canvas#bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
+    .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 92vh; }
+    .hero-image { position: relative; overflow: hidden; background: var(--charcoal); }
+    .hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
+    .hero-image:hover img { transform: scale(1.04); }
+    .hero-content { background: var(--cream); display: flex; flex-direction: column; justify-content: center; padding: 80px 72px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: var(--cream); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 8px 16px; border-radius: 2px; margin-bottom: 32px; width: fit-content; }
+    .hero-headline { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5.5rem); line-height: 1.05; color: var(--text-dark); margin-bottom: 24px; }
+    .hero-headline em { font-style: italic; color: var(--gold); }
+    .hero-sub { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; color: var(--text-mid); font-style: italic; margin-bottom: 48px; line-height: 1.6; }
+    .btn-primary { display: inline-block; background: var(--purple); color: var(--cream); font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 18px 40px; text-decoration: none; border: none; cursor: pointer; transition: background 0.25s, transform 0.2s; font-family: 'DM Sans', sans-serif; width: fit-content; }
+    .btn-primary:hover { background: var(--purple-mid); transform: translateY(-2px); }
 
-    /* HUD */
-    .hud {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      z-index: 10;
-      padding: 8px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(180deg, rgba(0,0,0,.85) 0%, transparent 100%);
-      pointer-events: none;
-    }
-    .hud-score { color: #E8B84B; font-size: .85rem; font-weight: 700; letter-spacing: 1px; }
-    .hud-lives { color: #E07820; font-size: .9rem; }
-    .hud-level { color: #C47AA0; font-size: .75rem; font-weight: 600; }
+    .shop-section { padding: 100px 60px; background: var(--dark); }
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); color: var(--cream); line-height: 1.1; }
+    .section-title em { font-style: italic; color: var(--gold-light); }
 
-    /* GAME ELEMENTS */
-    .player-el {
-      position: absolute;
-      z-index: 5;
-      font-size: 2.4rem;
-      line-height: 1;
-      text-align: center;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    .bullet-el {
-      position: absolute;
-      z-index: 4;
-      width: 4px;
-      border-radius: 2px;
-      background: linear-gradient(#E8B84B, #E07820);
-      pointer-events: none;
-    }
-    .enemy-el {
-      position: absolute;
-      z-index: 4;
-      text-align: center;
-      line-height: 1;
-      pointer-events: none;
-    }
-    .explode-el {
-      position: absolute;
-      z-index: 6;
-      text-align: center;
-      pointer-events: none;
-      animation: boom .45s ease-out forwards;
-    }
-    @keyframes boom {
-      0%   { transform: translate(-50%,-50%) scale(.4); opacity: 1; }
-      100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; }
-    }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 48px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+    .filter-btn { background: transparent; border: 1px solid rgba(201,124,42,0.35); color: rgba(245,237,224,0.65); font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 8px 20px; cursor: pointer; transition: all 0.2s; }
+    .filter-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+    .filter-btn.active { background: var(--purple); border-color: var(--purple); color: var(--cream); }
 
-    /* BOSS BAR */
-    .boss-bar-wrap {
-      position: absolute;
-      bottom: 8px; left: 12px; right: 12px;
-      z-index: 10;
-      display: none;
-      pointer-events: none;
-    }
-    .boss-lbl { color: #ff9f9f; font-size: .6rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; }
-    .boss-bg { background: rgba(255,255,255,.1); height: 7px; border-radius: 4px; }
-    .boss-fill { background: linear-gradient(90deg, #C0392B, #E07820); height: 7px; border-radius: 4px; transition: width .15s; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; max-width: 1400px; margin: 0 auto; }
+    .product-card { background: var(--charcoal); cursor: pointer; position: relative; overflow: hidden; aspect-ratio: 3/4; transition: transform 0.3s; }
+    .product-card:hover { transform: scale(1.01); z-index: 2; }
+    .product-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .product-card:hover img { transform: scale(1.06); }
+    .product-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,15,10,0.92) 0%, rgba(26,15,10,0.1) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px 20px; opacity: 0; transition: opacity 0.3s; }
+    .product-card:hover .product-overlay { opacity: 1; }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cream); margin-bottom: 4px; }
+    .product-price { font-size: 0.9rem; color: var(--gold-light); font-weight: 500; margin-bottom: 14px; }
+    .product-price .shipping-note { font-size: 0.72rem; color: rgba(245,237,224,0.6); margin-left: 6px; }
+    .btn-buy { background: var(--gold); color: var(--dark); border: none; padding: 12px 24px; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: background 0.2s; width: 100%; }
+    .btn-buy:hover { background: var(--gold-light); }
+    .sold-out-badge { position: absolute; top: 16px; right: 16px; background: rgba(26,15,10,0.85); color: var(--cream); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 12px; border: 1px solid rgba(245,237,224,0.3); }
+    .product-info-bar { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(26,15,10,0.88) 0%, transparent 100%); padding: 40px 16px 14px; }
+    .product-info-bar .product-name { font-size: 0.9rem; margin-bottom: 2px; }
+    .product-info-bar .product-price { font-size: 0.82rem; margin-bottom: 0; }
 
-    /* SCREENS */
-    .screen {
-      position: absolute;
-      inset: 0;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px 20px;
-    }
-    #startScreen  { background: linear-gradient(180deg,#1A0A00,#3D1050); }
-    #overScreen   { background: rgba(26,10,0,.94); display: none; }
-    #winScreen    { background: rgba(26,10,0,.94); display: none; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,5,3,0.88); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--cream); color: var(--text-dark); max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--text-mid); line-height: 1; z-index: 10; }
+    .modal-image { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+    .modal-body { padding: 32px 36px 40px; }
+    .modal-name { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-dark); margin-bottom: 8px; }
+    .modal-price { font-size: 1.2rem; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+    .modal-shipping { font-size: 0.8rem; color: var(--text-mid); margin-bottom: 20px; }
+    .modal-desc { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 32px; font-style: italic; }
+    .modal-divider { border: none; border-top: 1px solid rgba(92,61,40,0.2); margin-bottom: 28px; }
+    .step-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 20px; display: block; }
+    .address-form { margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-row.three { grid-template-columns: 2fr 1fr 1fr; }
+    .address-form input { width: 100%; padding: 12px 14px; border: 1px solid rgba(92,61,40,0.25); background: white; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text-dark); outline: none; transition: border-color 0.2s; }
+    .address-form input:focus { border-color: var(--purple); }
+    .address-form input::placeholder { color: rgba(92,61,40,0.45); }
 
-    .screen-emoji { font-size: 2.6rem; margin-bottom: 6px; }
-    .screen-title { font-size: 1.4rem; font-weight: 700; color: #E8B84B; letter-spacing: 2px; margin-bottom: 6px; }
-    .screen-sub { font-size: .72rem; color: rgba(245,237,216,.55); margin-bottom: 22px; line-height: 1.7; }
-    .screen-btn {
-      width: 100%;
-      background: #E07820;
-      color: white;
-      border: none;
-      padding: 14px;
-      font-family: 'Courier New', monospace;
-      font-size: .88rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 3px;
-      margin-bottom: 8px;
-      transition: background .2s;
-      /* Make sure buttons are clickable */
-      pointer-events: all;
-      -webkit-tap-highlight-color: rgba(224,120,32,.3);
-    }
-    .screen-btn:hover, .screen-btn:active { background: #C89030; }
-    .screen-btn.sec { background: rgba(255,255,255,.1); }
-    .screen-btn.sec:hover, .screen-btn.sec:active { background: rgba(255,255,255,.2); }
+    .story-section { background: var(--cream); display: grid; grid-template-columns: 1fr 1fr; min-height: 60vh; }
+    .story-image { overflow: hidden; }
+    .story-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .story-content { padding: 80px 72px; display: flex; flex-direction: column; justify-content: center; }
+    .story-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); color: var(--text-dark); margin-bottom: 24px; line-height: 1.15; }
+    .story-title em { font-style: italic; color: var(--gold); }
+    .story-text { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--text-mid); line-height: 1.9; }
 
-    .score-big { font-size: 2.2rem; font-weight: 700; color: #E8B84B; margin: 12px 0; }
-    .discount-box {
-      background: #5A1E6E;
-      border: 2px solid #E8B84B;
-      padding: 12px 18px;
-      border-radius: 4px;
-      margin: 10px 0;
-    }
-    .discount-code { font-size: 1.3rem; font-weight: 700; color: #E8B84B; letter-spacing: 3px; }
-    .discount-note { font-size: .68rem; color: rgba(245,237,216,.6); margin-top: 4px; }
+    footer { background: var(--charcoal); padding: 60px 60px 40px; border-top: 1px solid rgba(201,124,42,0.2); }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; gap: 40px; flex-wrap: wrap; }
+    .footer-brand .nav-logo { font-size: 1.6rem; display: block; margin-bottom: 12px; }
+    .footer-brand p { font-family: 'Cormorant Garamond', serif; font-style: italic; color: rgba(245,237,224,0.55); font-size: 1rem; max-width: 260px; line-height: 1.6; }
+    .footer-links h4 { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .footer-links ul { list-style: none; }
+    .footer-links ul li { margin-bottom: 10px; }
+    .footer-links ul a { color: rgba(245,237,224,0.6); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+    .footer-links ul a:hover { color: var(--gold-light); }
+    .footer-bottom { border-top: 1px solid rgba(245,237,224,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 0.75rem; color: rgba(245,237,224,0.35); }
 
-    /* DESKTOP HINT */
-    .kb-hint {
-      font-size: .62rem;
-      color: rgba(245,237,216,.3);
-      margin-top: 8px;
-      line-height: 1.6;
-    }
+    /* Easter egg trigger */
+    #eggTrigger { cursor: default; user-select: none; }
 
-    /* CONTROLS BAR */
-    #controls {
-      width: 360px;
-      background: #0A0500;
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      gap: 8px;
-    }
-
-    .ctrl-group { display: flex; gap: 6px; }
-
-    /* BIG TOUCH BUTTONS */
-    .ctrl-btn {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      border: 2px solid rgba(224,120,32,.5);
-      background: rgba(224,120,32,.12);
-      color: #E07820;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      /* Critical for touch */
-      touch-action: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: background .1s;
-      flex-shrink: 0;
-    }
-    .ctrl-btn:active,
-    .ctrl-btn.pressed {
-      background: rgba(224,120,32,.4);
-      border-color: #E07820;
-    }
-
-    .fire-btn {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      border: 2px solid rgba(192,57,43,.6);
-      background: rgba(192,57,43,.2);
-      color: #ff9f9f;
-      font-size: 1.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      touch-action: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: background .1s;
-      flex-shrink: 0;
-    }
-    .fire-btn:active,
-    .fire-btn.pressed {
-      background: rgba(192,57,43,.5);
-    }
-
-    /* CLOSE */
-    .close-btn {
-      position: fixed;
-      top: 10px; right: 10px;
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.2);
-      color: rgba(255,255,255,.6);
-      font-size: .95rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-image { height: 55vw; min-height: 260px; }
+      .hero-content { padding: 48px 28px; }
+      .shop-section { padding: 60px 16px; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
+      .story-section { grid-template-columns: 1fr; }
+      .story-image { height: 260px; }
+      .story-content { padding: 48px 28px; }
+      footer { padding: 48px 28px 32px; }
+      .footer-top { flex-direction: column; }
+      .modal-body { padding: 24px 20px 32px; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-row.three { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<button class="close-btn" onclick="goBack()">✕</button>
-
-<!-- GAME CANVAS + ELEMENTS -->
-<div id="gameWrap">
-  <canvas id="bg" width="360" height="580"></canvas>
-
-  <div class="hud">
-    <div class="hud-score">SCORE: <span id="scoreEl">0</span></div>
-    <div class="hud-lives" id="livesEl">💎💎💎</div>
-    <div class="hud-level">LVL <span id="levelEl">1</span></div>
+  <div class="announce">
+    ✦ One of a Kind. Never Repeated. Handmade in Philadelphia. &nbsp;<a href="#shop">Shop Now →</a>
   </div>
 
-  <div class="boss-bar-wrap" id="bossBar">
-    <div class="boss-lbl">BOSS HP</div>
-    <div class="boss-bg"><div class="boss-fill" id="bossFill" style="width:100%"></div></div>
-  </div>
+  <nav>
+    <a class="nav-logo" href="#">Jewelz <span>ov Clay</span></a>
+    <ul class="nav-links">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-  <!-- START -->
-  <div class="screen" id="startScreen">
-    <div class="screen-emoji">💎</div>
-    <div class="screen-title">CLAY BLASTER</div>
-    <div class="screen-sub">
-      You found the secret! 🎉<br/>
-      Shoot down the clay enemies.<br/>
-      <span style="color:#E8B84B">Survive all 3 waves to unlock a discount!</span>
+  <section class="hero">
+    <div class="hero-image">
+      <img src="images/hero.jpg" alt="Handmade jewelry by Jewelz Ov Clay"/>
     </div>
-    <button class="screen-btn" id="startBtn">▶ START GAME</button>
-    <div class="kb-hint">
-      Desktop: Arrow Keys to move · Space or Z to fire<br/>
-      Mobile: Use the buttons below
+    <div class="hero-content">
+      <div class="hero-badge">✦ Handmade in Philadelphia</div>
+      <h1 class="hero-headline">Wear the<br><em>Art.</em><br>Own the Story.</h1>
+      <p class="hero-sub">"One of a Kind. Never Repeated."</p>
+      <a href="#shop" class="btn-primary">Browse the Collection</a>
+    </div>
+  </section>
+
+  <section class="shop-section" id="shop">
+    <div class="section-header">
+      <span class="section-label">✦ The Collection</span>
+      <h2 class="section-title">Every Piece is <em>One of One</em></h2>
+    </div>
+    <div class="filter-bar" id="filterBar"></div>
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+
+  <section class="story-section" id="story">
+    <div class="story-image">
+      <img src="images/story.jpg" alt="The artist behind Jewelz Ov Clay"/>
+    </div>
+    <div class="story-content">
+      <span class="section-label">✦ Our Story</span>
+      <h2 class="story-title">Clay, <em>Culture,</em><br>& Craft</h2>
+      <p class="story-text">
+        Every piece of Jewelz Ov Clay is shaped by hand right here in Philadelphia.
+        No factories. No duplicates. Just one artist pouring intention into every bead,
+        every clasp, every curve. Born during the pandemic. Built to last forever.
+        When you wear a piece, you carry that story with you.
+      </p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="nav-logo" href="#">Jewelz <span>ov Clay</span></a>
+        <p>Handmade jewelry born from Philadelphia. One of a kind. Never repeated.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#shop">Shop</a></li>
+          <li><a href="#story">Our Story</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:BuhzzedEnt@gmail.com">BuhzzedEnt@gmail.com</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Jewelz Ov Clay. All rights reserved. Philadelphia, PA.</p>
+      <p id="eggTrigger" onclick="eggClick()">Handmade with love ✦</p>
+    </div>
+  </footer>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">×</button>
+      <img class="modal-image" id="modalImage" src="" alt=""/>
+      <div class="modal-body">
+        <h2 class="modal-name" id="modalName"></h2>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-shipping">+ $6.00 shipping • Ships from Philadelphia</div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <hr class="modal-divider"/>
+        <span class="step-label">✦ Enter your shipping address</span>
+        <div class="address-form">
+          <div class="form-row">
+            <input type="text" id="fieldFirst" placeholder="First Name"/>
+            <input type="text" id="fieldLast" placeholder="Last Name"/>
+          </div>
+          <div class="form-row full">
+            <input type="text" id="fieldStreet" placeholder="Street Address"/>
+          </div>
+          <div class="form-row three">
+            <input type="text" id="fieldCity" placeholder="City"/>
+            <input type="text" id="fieldState" placeholder="State"/>
+            <input type="text" id="fieldZip" placeholder="ZIP"/>
+          </div>
+          <div class="form-row full">
+            <input type="email" id="fieldEmail" placeholder="Email (for order confirmation)"/>
+          </div>
+        </div>
+        <div id="paypalButtonContainer"></div>
+      </div>
     </div>
   </div>
 
-  <!-- GAME OVER -->
-  <div class="screen" id="overScreen">
-    <div class="screen-emoji">💔</div>
-    <div class="screen-title">GAME OVER</div>
-    <div class="score-big" id="overScore">0</div>
-    <div style="font-size:.72rem;color:rgba(245,237,216,.5);margin-bottom:18px;">Survive all 3 bosses to unlock your discount!</div>
-    <button class="screen-btn" id="retryBtn">↺ TRY AGAIN</button>
-    <button class="screen-btn sec" id="backBtn1">← Back to Shop</button>
-  </div>
+  <script>
+    const PAYPAL_EMAIL = "buhzzedent@gmail.com";
 
-  <!-- WIN -->
-  <div class="screen" id="winScreen">
-    <div class="screen-emoji">🏆</div>
-    <div class="screen-title">YOU WIN!</div>
-    <div class="score-big" id="winScore">0</div>
-    <div class="discount-box">
-      <div class="discount-code" id="discountCode">CLAYQUEEN10</div>
-      <div class="discount-note">Enter at PayPal checkout for 10% off!</div>
-    </div>
-    <button class="screen-btn" id="playAgainBtn" style="margin-top:12px;">↺ Play Again</button>
-    <button class="screen-btn sec" id="backBtn2">← Back to Shop</button>
-  </div>
-</div>
+    const products = [
+      // ── HOOPS & CIRCLES ──
+      { id:1, name:"Neon Orbit Drops", price:30, image:"images/IMG_2490.jpeg", category:"Hoops & Circles",
+        desc:"Swirling pink, green and gold clay hoops cascade from a trail of mixed crystal beads — crackle, stone and glitter all layered together. Feels like wearing a galaxy. Long, dramatic and completely one of a kind.", soldOut:false },
 
-<!-- CONTROLS -->
-<div id="controls">
-  <div class="ctrl-group">
-    <div class="ctrl-btn" id="btnLeft">◀</div>
-    <div class="ctrl-btn" id="btnRight">▶</div>
-  </div>
-  <div class="fire-btn" id="btnFire">🔥</div>
-  <div class="ctrl-group">
-    <div class="ctrl-btn" id="btnUp">▲</div>
-    <div class="ctrl-btn" id="btnDown">▼</div>
-  </div>
-</div>
+      { id:2, name:"Prism Storm Hoops", price:30, image:"images/IMG_2492.jpeg", category:"Hoops & Circles",
+        desc:"Oversized clay orbit hoops in electric pink, purple and green glitter swirls hang from a long mixed bead chain packed with crackle and stone accents. These are the ones that clear a room.", soldOut:false },
 
-<script>
-'use strict';
+      { id:3, name:"Acid Rain Collection", price:30, image:"images/IMG_2496.jpeg", category:"Hoops & Circles",
+        desc:"Five variations of the same bold hoop silhouette in pink, purple and lime — each one slightly different, like nature intended. Long bead chains in purple, gray and green crystals. Pick your vibe.", soldOut:false },
 
-// ── CONSTANTS ──────────────────────────────────────────
-const W = 360, H = 580;
-const PSPEED = 4.5;
-const BSPEED = 10;
-const FIRE_INTERVAL = 160; // ms
+      { id:4, name:"Citrus Orbit Hoops", price:30, image:"images/IMG_2532.jpeg", category:"Hoops & Circles",
+        desc:"Rainbow stained clay circles packed with mosaic color — every angle catches the light differently. Full spectrum bead chains cascade below. These are the ones people stop you to ask about.", soldOut:false },
 
-const ENEMY_DEFS = [
-  { emoji:'🧶', hp:1, pts:10, size:28, speed:1.3 },
-  { emoji:'🪩', hp:1, pts:15, size:26, speed:1.7 },
-  { emoji:'💜', hp:2, pts:25, size:30, speed:1.1 },
-  { emoji:'🌀', hp:3, pts:40, size:32, speed:.85 },
-];
-const BOSS_DEF = { emoji:'👑', hp:40, pts:500, size:56 };
-const CODES = ['CLAYQUEEN10','JOC15OFF','JEWELZ20'];
+      { id:5, name:"Solstice Hoops", price:30, image:"images/IMG_2534.jpeg", category:"Hoops & Circles",
+        desc:"Rainbow mosaic clay circles with gold ball studs and mismatched full spectrum crystal bead chains. Earthy and electric at once. No two sides look the same and that is the whole point.", soldOut:false },
 
-// ── STATE ──────────────────────────────────────────────
-let score=0, lives=3, level=1, running=false;
-let px=W/2, py=H-80;
-let bullets=[], enemies=[], blasts=[];
-let lastFire=0, lastSpawn=0;
-let kills=0, killsPerBoss=12;
-let bossAlive=false, bossObj=null;
-let bossMaxHp=0;
-let animId=null;
+      // ── HEARTS ──
+      { id:6, name:"Rainbow Heart Chain", price:30, image:"images/IMG_2501.jpeg", category:"Hearts",
+        desc:"Three rainbow clay hearts linked by hammered silver rings with an evil eye bead charm mid chain. Love and protection combined in one long dramatic drop. Bold color, deep meaning.", soldOut:false },
 
-// Input state — works for BOTH keyboard AND touch
-const keys = { left:false, right:false, up:false, down:false, fire:false };
-let fireTimer=null;
+      // ── DIAMONDS ──
+      { id:7, name:"Jungle Diamond Drops", price:30, image:"images/IMG_2527.jpeg", category:"Diamonds",
+        desc:"Green and purple diamond clay drops with a silver peace sign accent and layered bead chains of gray, purple and crystal. Dark and bold with a message built right in.", soldOut:false },
 
-// ── DOM REFS ───────────────────────────────────────────
-const wrap    = document.getElementById('gameWrap');
-const bgCanvas= document.getElementById('bg');
-const ctx     = bgCanvas.getContext('2d');
-const scoreEl = document.getElementById('scoreEl');
-const livesEl = document.getElementById('livesEl');
-const levelEl = document.getElementById('levelEl');
-const bossBar = document.getElementById('bossBar');
-const bossFill= document.getElementById('bossFill');
+      { id:8, name:"Starfall Diamonds", price:30, image:"images/IMG_2542.jpeg", category:"Diamonds",
+        desc:"Rainbow mosaic diamond clay drops with gold star charms descending through full spectrum crystal beads down to a gold fan charm at the bottom. A statement from top to bottom.", soldOut:false },
 
-const startScreen = document.getElementById('startScreen');
-const overScreen  = document.getElementById('overScreen');
-const winScreen   = document.getElementById('winScreen');
+      // ── HEXAGONS ──
+      { id:9, name:"Hex Jungle Drops", price:30, image:"images/IMG_2546.jpeg", category:"Hexagons",
+        desc:"Purple and green hexagon clay hoops with long chains of black, purple and lime beads. Deep, wild energy. The kind of earring that has its own personality before you even put them on.", soldOut:false },
 
-// ── STARFIELD ──────────────────────────────────────────
-const stars = Array.from({length:80}, () => ({
-  x: Math.random()*W,
-  y: Math.random()*H,
-  s: .5+Math.random()*1.5,
-  sp: .5+Math.random()*2,
-  o: .3+Math.random()*.7
-}));
+      { id:10, name:"Neon Hex Storm", price:30, image:"images/IMG_2552.jpeg", category:"Hexagons",
+        desc:"Bright pink, purple and lime hexagon drops packed with glitter and pattern detail. Long chains of mixed frosted, crackle and purple beads cascade below. Loud and unapologetic.", soldOut:false },
 
-function drawBg() {
-  ctx.fillStyle='#000';
-  ctx.fillRect(0,0,W,H);
-  stars.forEach(st => {
-    ctx.beginPath();
-    ctx.arc(st.x,st.y,st.s,0,Math.PI*2);
-    ctx.fillStyle=`rgba(245,237,216,${st.o})`;
-    ctx.fill();
-    st.y+=st.sp;
-    if(st.y>H){ st.y=0; st.x=Math.random()*W; }
-  });
-}
+      // ── SKULLS ──
+      { id:11, name:"Midnight Skull Teardrops", price:30, image:"images/IMG_2859.jpeg", category:"Skulls",
+        desc:"Silver skull charm beads stacked with green and purple crystals above deep blue and green galaxy glitter clay teardrops. Haunting and beautiful. Dark romance in earring form.", soldOut:false },
 
-// ── PLAYER ────────────────────────────────────────────
-let playerEl = null;
-function makePlayer() {
-  if(playerEl) playerEl.remove();
-  playerEl = document.createElement('div');
-  playerEl.className = 'player-el';
-  playerEl.textContent = '💎';
-  wrap.appendChild(playerEl);
-  movePlayer();
-}
-function movePlayer() {
-  playerEl.style.left = px+'px';
-  playerEl.style.top  = py+'px';
-}
+      { id:12, name:"Green Skull Threaders", price:30, image:"images/IMG_3607.jpeg", category:"Skulls",
+        desc:"Long silver chain threader earrings with bright lime green skull beads, black and purple spacers and a swirled clay disc pendant below. Subtle until you look closer — then it all hits at once.", soldOut:false },
 
-// ── BULLETS ───────────────────────────────────────────
-function fireBullet() {
-  if(!running) return;
-  const now = Date.now();
-  if(now - lastFire < FIRE_INTERVAL) return;
-  lastFire = now;
+      { id:13, name:"Blue Skull Heart Threads", price:30, image:"images/IMG_3615.jpeg", category:"Skulls",
+        desc:"Silver chain threaders with stacked crackle stone beads in gray, blue and purple leading down to bold blue skull charms. A vivid rainbow clay heart pendant hangs below. Sweet and sinister.", soldOut:false },
 
-  function makeBullet(x, y, angle=0) {
-    const el = document.createElement('div');
-    el.className = 'bullet-el';
-    const h = level>=3?18:12;
-    const w = level>=3?5:3;
-    el.style.cssText=`left:${x}px;top:${y}px;height:${h}px;width:${w}px;`;
-    wrap.appendChild(el);
-    bullets.push({el, x, y, angle});
-  }
+      // ── TEARDROPS ──
+      { id:14, name:"Poison Garden Teardrops", price:30, image:"images/IMG_2867.jpeg", category:"Teardrops",
+        desc:"Purple, green and black marbled clay teardrops with coin stud tops and long chains of pink crackle, green and clear beads. Eerily beautiful. Like holding a piece of the night sky.", soldOut:false },
 
-  makeBullet(px-2, py-20);
-  if(level >= 2) {
-    makeBullet(px-12, py-10, -.08);
-    makeBullet(px+8,  py-10,  .08);
-  }
-}
+      { id:15, name:"Tropics Collection", price:30, image:"images/IMG_2877.jpeg", category:"Teardrops",
+        desc:"Five vivid rainbow swirl clay teardrop variants in orange, yellow, green and purple — each with coin stud tops and rainbow crystal hoop accents. Pick your favorite or collect them all.", soldOut:false },
+    ];
 
-function updateBullets() {
-  bullets = bullets.filter(b => {
-    b.y -= BSPEED + level*.4;
-    b.x += (b.angle||0) * BSPEED;
-    b.el.style.top  = b.y+'px';
-    b.el.style.left = b.x+'px';
-    if(b.y < -20){ b.el.remove(); return false; }
-    return true;
-  });
-}
+    // ── FILTER BAR ──
+    const categories = ['All', ...new Set(products.map(p => p.category))];
+    const filterBar = document.getElementById('filterBar');
+    let activeCategory = 'All';
 
-// ── ENEMIES ───────────────────────────────────────────
-function spawnEnemy() {
-  if(bossAlive) return;
-  const def = ENEMY_DEFS[Math.floor(Math.random() * Math.min(level+1, ENEMY_DEFS.length))];
-  const x = def.size/2 + Math.random()*(W-def.size);
-  const el = document.createElement('div');
-  el.className='enemy-el';
-  el.style.cssText=`font-size:${def.size}px;left:${x}px;top:${-def.size}px;`;
-  el.textContent = def.emoji;
-  wrap.appendChild(el);
-  enemies.push({
-    el, x, y:-def.size,
-    hp:def.hp, maxHp:def.hp, pts:def.pts,
-    speed:def.speed+level*.12,
-    size:def.size,
-    wobble:Math.random()*Math.PI*2,
-    wSpeed:.025+Math.random()*.02
-  });
-}
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+      btn.textContent = cat;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = cat;
+        renderGrid();
+      });
+      filterBar.appendChild(btn);
+    });
 
-function spawnBoss() {
-  bossAlive=true;
-  bossMaxHp = BOSS_DEF.hp + level*12;
-  bossBar.style.display='block';
-  bossFill.style.width='100%';
-  const el=document.createElement('div');
-  el.className='enemy-el';
-  el.style.cssText=`font-size:${BOSS_DEF.size}px;left:${W/2}px;top:${-BOSS_DEF.size}px;`;
-  el.textContent=BOSS_DEF.emoji;
-  wrap.appendChild(el);
-  bossObj={el,x:W/2,y:-BOSS_DEF.size,hp:bossMaxHp,size:BOSS_DEF.size,wobble:0,isBoss:true};
-  enemies.push(bossObj);
-}
+    // ── RENDER GRID ──
+    const grid = document.getElementById('productGrid');
 
-function updateEnemies() {
-  const now=Date.now();
-  const spawnRate=Math.max(550,1400-level*130);
-  if(!bossAlive && now-lastSpawn>spawnRate){ spawnEnemy(); lastSpawn=now; }
-
-  enemies=enemies.filter(e=>{
-    e.wobble+=e.wSpeed||.025;
-    e.y+=e.speed||1.3;
-    if(e.isBoss){
-      e.x=W/2+Math.sin(e.wobble*.45)*130;
-      if(e.y<75) e.y+=e.speed||1;
-    } else {
-      e.x+=Math.sin(e.wobble)*1.8;
+    function renderGrid() {
+      grid.innerHTML = '';
+      const filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.name}" loading="lazy"/>
+          <div class="product-info-bar">
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 ship</span></div>
+          </div>
+          <div class="product-overlay">
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 shipping</span></div>
+            ${p.soldOut
+              ? `<button class="btn-buy" disabled style="opacity:0.4;cursor:not-allowed;">Sold Out</button>`
+              : `<button class="btn-buy" onclick="openModal(${p.id})">Buy This Piece</button>`}
+          </div>
+          ${p.soldOut ? `<div class="sold-out-badge">Sold Out</div>` : ''}
+        `;
+        grid.appendChild(card);
+      });
     }
-    e.el.style.top=e.y+'px';
-    e.el.style.left=e.x+'px';
 
-    // Off bottom
-    if(e.y>H+e.size){ e.el.remove(); return false; }
+    renderGrid();
 
-    // Hit player
-    const dx=Math.abs(e.x-px), dy=Math.abs(e.y-py);
-    if(dx<26 && dy<26){ e.el.remove(); hitPlayer(); return false; }
+    // ── MODAL ──
+    let currentProduct = null;
 
-    return true;
-  });
-}
+    function openModal(id) {
+      currentProduct = products.find(p => p.id === id);
+      if (!currentProduct) return;
+      document.getElementById('modalImage').src = currentProduct.image;
+      document.getElementById('modalImage').alt = currentProduct.name;
+      document.getElementById('modalName').textContent = currentProduct.name;
+      document.getElementById('modalPrice').textContent = `$${currentProduct.price}.00`;
+      document.getElementById('modalDesc').textContent = currentProduct.desc;
+      ['fieldFirst','fieldLast','fieldStreet','fieldCity','fieldState','fieldZip','fieldEmail']
+        .forEach(f => document.getElementById(f).value = '');
+      renderPayPalButton(currentProduct);
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-// ── COLLISION ──────────────────────────────────────────
-function checkCollisions() {
-  for(let i=bullets.length-1;i>=0;i--){
-    const b=bullets[i];
-    for(let j=enemies.length-1;j>=0;j--){
-      const e=enemies[j];
-      const dx=Math.abs(b.x-e.x), dy=Math.abs(b.y-e.y);
-      if(dx < e.size/2+5 && dy < e.size/2+5){
-        b.el.remove(); bullets.splice(i,1);
-        e.hp--;
-        if(e.isBoss){
-          const pct=(e.hp/bossMaxHp)*100;
-          bossFill.style.width=pct+'%';
-        }
-        if(e.hp<=0){
-          explode(e.x,e.y,e.size);
-          score += (e.pts||10)*(level);
-          scoreEl.textContent=score;
-          e.el.remove(); enemies.splice(j,1);
-          if(e.isBoss){
-            bossAlive=false; bossObj=null;
-            bossBar.style.display='none';
-            kills=0; level++;
-            levelEl.textContent=level;
-            if(level>3){ setTimeout(winGame,400); }
-          } else {
-            kills++;
-            if(kills>=killsPerBoss) spawnBoss();
-          }
-        }
-        break;
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+      document.getElementById('paypalButtonContainer').innerHTML = '';
+      currentProduct = null;
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    // ── PAYPAL ──
+    function renderPayPalButton(product) {
+      const container = document.getElementById('paypalButtonContainer');
+      container.innerHTML = '';
+      const totalPrice = (product.price + 6).toFixed(2);
+      const itemName = encodeURIComponent(product.name + " - Jewelz Ov Clay");
+
+      function getAddress() {
+        return {
+          f: document.getElementById('fieldFirst').value.trim(),
+          l: document.getElementById('fieldLast').value.trim(),
+          s: document.getElementById('fieldStreet').value.trim(),
+          c: document.getElementById('fieldCity').value.trim(),
+          st: document.getElementById('fieldState').value.trim(),
+          z: document.getElementById('fieldZip').value.trim(),
+          e: document.getElementById('fieldEmail').value.trim()
+        };
       }
+
+      const btn = document.createElement('button');
+      btn.className = 'btn-primary';
+      btn.style.cssText = 'width:100%;text-align:center;background:#003087;font-size:0.88rem;padding:16px;';
+      btn.textContent = `Pay $${totalPrice} via PayPal`;
+
+      btn.addEventListener('click', function() {
+        const a = getAddress();
+        if (!a.f || !a.l || !a.s || !a.c || !a.st || !a.z || !a.e) {
+          alert("Please fill in all shipping fields before paying.");
+          return;
+        }
+        const note = encodeURIComponent(
+          `ORDER: ${product.name} | Ship to: ${a.f} ${a.l}, ${a.s}, ${a.c} ${a.st} ${a.z} | Email: ${a.e}`
+        );
+        const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick` +
+          `&business=${encodeURIComponent(PAYPAL_EMAIL)}` +
+          `&item_name=${itemName}&amount=${totalPrice}&currency_code=USD` +
+          `&no_shipping=1&custom=${note}` +
+          `&return=${encodeURIComponent(window.location.href)}` +
+          `&cancel_return=${encodeURIComponent(window.location.href)}`;
+        window.open(url, '_blank');
+      });
+
+      container.appendChild(btn);
+
+      const note = document.createElement('p');
+      note.style.cssText = 'font-size:0.72rem;color:var(--text-mid);margin-top:10px;text-align:center;line-height:1.5;';
+      note.textContent = 'You will be redirected to PayPal to complete your purchase securely.';
+      container.appendChild(note);
     }
-  }
-}
 
-// ── EXPLOSION ──────────────────────────────────────────
-function explode(x,y,size) {
-  const el=document.createElement('div');
-  el.className='explode-el';
-  el.style.cssText=`left:${x}px;top:${y}px;font-size:${size*1.2}px;`;
-  el.textContent='💥';
-  wrap.appendChild(el);
-  setTimeout(()=>el.remove(),450);
-}
-
-// ── PLAYER HIT ─────────────────────────────────────────
-function hitPlayer() {
-  lives=Math.max(0,lives-1);
-  livesEl.textContent='💎'.repeat(lives)||'💀';
-  explode(px,py,44);
-  if(lives<=0){ setTimeout(gameOver,350); return; }
-  playerEl.style.opacity='.2';
-  setTimeout(()=>{if(playerEl)playerEl.style.opacity='1';},900);
-}
-
-// ── GAME LOOP ──────────────────────────────────────────
-function loop() {
-  if(!running) return;
-
-  // Movement
-  if(keys.left)  px=Math.max(22,px-PSPEED);
-  if(keys.right) px=Math.min(W-22,px+PSPEED);
-  if(keys.up)    py=Math.max(60,py-PSPEED);
-  if(keys.down)  py=Math.min(H-36,py+PSPEED);
-
-  // Auto-fire while button held
-  if(keys.fire) fireBullet();
-
-  drawBg();
-  movePlayer();
-  updateBullets();
-  updateEnemies();
-  checkCollisions();
-
-  animId=requestAnimationFrame(loop);
-}
-
-// ── START ──────────────────────────────────────────────
-function startGame() {
-  // Clear all game elements
-  wrap.querySelectorAll('.bullet-el,.enemy-el,.explode-el').forEach(e=>e.remove());
-  bullets=[]; enemies=[]; blasts=[];
-  score=0; lives=3; level=1; kills=0; bossAlive=false; bossObj=null;
-  px=W/2; py=H-80;
-  lastFire=0; lastSpawn=0;
-  scoreEl.textContent='0';
-  livesEl.textContent='💎💎💎';
-  levelEl.textContent='1';
-  bossBar.style.display='none';
-
-  startScreen.style.display='none';
-  overScreen.style.display='none';
-  winScreen.style.display='none';
-
-  makePlayer();
-  running=true;
-  if(animId) cancelAnimationFrame(animId);
-  loop();
-}
-
-function gameOver() {
-  running=false;
-  cancelAnimationFrame(animId);
-  document.getElementById('overScore').textContent=score.toLocaleString();
-  overScreen.style.display='flex';
-}
-
-function winGame() {
-  running=false;
-  cancelAnimationFrame(animId);
-  const code=CODES[Math.floor(Math.random()*CODES.length)];
-  document.getElementById('discountCode').textContent=code;
-  document.getElementById('winScore').textContent=score.toLocaleString();
-  winScreen.style.display='flex';
-}
-
-function goBack() { window.location.href='index.html'; }
-
-// ── BUTTON WIRING ──────────────────────────────────────
-// Correctly wire all screen buttons
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('retryBtn').addEventListener('click', startGame);
-document.getElementById('playAgainBtn').addEventListener('click', startGame);
-document.getElementById('backBtn1').addEventListener('click', goBack);
-document.getElementById('backBtn2').addEventListener('click', goBack);
-
-// ── TOUCH CONTROLS (pointer events work on ALL devices) ──
-function wireButton(id, keyName) {
-  const el = document.getElementById(id);
-
-  el.addEventListener('pointerdown', e => {
-    e.preventDefault();
-    keys[keyName] = true;
-    el.classList.add('pressed');
-  });
-
-  el.addEventListener('pointerup', e => {
-    e.preventDefault();
-    keys[keyName] = false;
-    el.classList.remove('pressed');
-  });
-
-  el.addEventListener('pointerleave', e => {
-    keys[keyName] = false;
-    el.classList.remove('pressed');
-  });
-
-  el.addEventListener('pointercancel', e => {
-    keys[keyName] = false;
-    el.classList.remove('pressed');
-  });
-}
-
-wireButton('btnLeft',  'left');
-wireButton('btnRight', 'right');
-wireButton('btnUp',    'up');
-wireButton('btnDown',  'down');
-
-// Fire button — fires on press and auto-fires while held
-const fireBtn = document.getElementById('btnFire');
-fireBtn.addEventListener('pointerdown', e => {
-  e.preventDefault();
-  keys.fire = true;
-  fireBtn.classList.add('pressed');
-  fireBullet(); // immediate fire on tap
-});
-fireBtn.addEventListener('pointerup', e => {
-  e.preventDefault();
-  keys.fire = false;
-  fireBtn.classList.remove('pressed');
-});
-fireBtn.addEventListener('pointerleave', e => {
-  keys.fire = false;
-  fireBtn.classList.remove('pressed');
-});
-fireBtn.addEventListener('pointercancel', e => {
-  keys.fire = false;
-  fireBtn.classList.remove('pressed');
-});
-
-// ── KEYBOARD CONTROLS (desktop) ──────────────────────
-document.addEventListener('keydown', e => {
-  switch(e.key) {
-    case 'ArrowLeft':  case 'a': case 'A': keys.left=true;  e.preventDefault(); break;
-    case 'ArrowRight': case 'd': case 'D': keys.right=true; e.preventDefault(); break;
-    case 'ArrowUp':    case 'w': case 'W': keys.up=true;    e.preventDefault(); break;
-    case 'ArrowDown':  case 's': case 'S': keys.down=true;  e.preventDefault(); break;
-    case ' ':          case 'z': case 'Z': keys.fire=true;   e.preventDefault(); fireBullet(); break;
-  }
-});
-
-document.addEventListener('keyup', e => {
-  switch(e.key) {
-    case 'ArrowLeft':  case 'a': case 'A': keys.left=false;  break;
-    case 'ArrowRight': case 'd': case 'D': keys.right=false; break;
-    case 'ArrowUp':    case 'w': case 'W': keys.up=false;    break;
-    case 'ArrowDown':  case 's': case 'S': keys.down=false;  break;
-    case ' ':          case 'z': case 'Z': keys.fire=false;   break;
-  }
-});
-
-// Prevent arrow keys from scrolling the page
-window.addEventListener('keydown', e => {
-  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) {
-    e.preventDefault();
-  }
-});
-</script>
+    // ── EASTER EGG (7 clicks on footer text) ──
+    let eggClicks = 0, eggTimer = null;
+    function eggClick() {
+      eggClicks++;
+      clearTimeout(eggTimer);
+      if (eggClicks >= 7) {
+        eggClicks = 0;
+        window.open('game.html', '_blank', 'width=420,height=760');
+      }
+      eggTimer = setTimeout(() => eggClicks = 0, 3000);
+    }
+  </script>
 </body>
 </html>

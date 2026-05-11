@@ -3,536 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Jewelz Ov Clay — Bold handmade polymer clay jewelry from Philadelphia. One of a kind. Never repeated."/>
+  <meta name="keywords" content="polymer clay jewelry, handmade jewelry, Philadelphia, clay earrings, bold jewelry"/>
   <title>Jewelz Ov Clay — Handmade in Philadelphia</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --purple:     #4a1a6b;
-      --purple-mid: #6b2d8b;
-      --gold:       #c97c2a;
-      --gold-light: #e8a84a;
-      --cream:      #f5ede0;
-      --dark:       #1a0f0a;
-      --charcoal:   #2c1f18;
-      --text-dark:  #1e1208;
-      --text-mid:   #5c3d28;
+      --purple: #4a1a6b; --purple-mid: #6b2d8b;
+      --gold: #c97c2a; --gold-light: #e8a84a;
+      --cream: #f5ede0; --dark: #1a0f0a;
+      --charcoal: #2c1f18; --text-dark: #1e1208; --text-mid: #5c3d28;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--cream); overflow-x: hidden; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--dark);
-      color: var(--cream);
-      overflow-x: hidden;
-    }
-
-    /* ── ANNOUNCEMENT BAR ── */
-    .announce {
-      background: var(--purple);
-      text-align: center;
-      padding: 10px 20px;
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--cream);
-    }
+    .announce { background: var(--purple); text-align: center; padding: 10px 20px; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); }
     .announce a { color: var(--gold-light); text-decoration: none; font-weight: 500; }
 
-    /* ── NAV ── */
-    nav {
-      background: var(--dark);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      height: 72px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid rgba(201,124,42,0.15);
-    }
-
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--gold);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-    }
+    nav { background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 72px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(201,124,42,0.15); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; }
     .nav-logo span { color: var(--cream); font-style: italic; }
-
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 0.78rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--cream);
-      text-decoration: none;
-      opacity: 0.85;
-      transition: color 0.2s, opacity 0.2s;
-    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); text-decoration: none; opacity: 0.85; transition: color 0.2s, opacity 0.2s; }
     .nav-links a:hover { color: var(--gold-light); opacity: 1; }
 
-    /* ── HERO ── */
-    .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 92vh;
-    }
-
-    .hero-image {
-      position: relative;
-      overflow: hidden;
-      background: var(--charcoal);
-    }
-    .hero-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 8s ease;
-    }
+    .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 92vh; }
+    .hero-image { position: relative; overflow: hidden; background: var(--charcoal); }
+    .hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
     .hero-image:hover img { transform: scale(1.04); }
-
-    .hero-content {
-      background: var(--cream);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 80px 72px;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--purple);
-      color: var(--cream);
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      border-radius: 2px;
-      margin-bottom: 32px;
-      width: fit-content;
-    }
-
-    .hero-headline {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 5vw, 5.5rem);
-      line-height: 1.05;
-      color: var(--text-dark);
-      margin-bottom: 24px;
-    }
-    .hero-headline em {
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    .hero-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      color: var(--text-mid);
-      font-style: italic;
-      margin-bottom: 48px;
-      line-height: 1.6;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      background: var(--purple);
-      color: var(--cream);
-      font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      padding: 18px 40px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: background 0.25s, transform 0.2s;
-      font-family: 'DM Sans', sans-serif;
-      width: fit-content;
-    }
+    .hero-content { background: var(--cream); display: flex; flex-direction: column; justify-content: center; padding: 80px 72px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: var(--cream); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 8px 16px; border-radius: 2px; margin-bottom: 32px; width: fit-content; }
+    .hero-headline { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5.5rem); line-height: 1.05; color: var(--text-dark); margin-bottom: 24px; }
+    .hero-headline em { font-style: italic; color: var(--gold); }
+    .hero-sub { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; color: var(--text-mid); font-style: italic; margin-bottom: 48px; line-height: 1.6; }
+    .btn-primary { display: inline-block; background: var(--purple); color: var(--cream); font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 18px 40px; text-decoration: none; border: none; cursor: pointer; transition: background 0.25s, transform 0.2s; font-family: 'DM Sans', sans-serif; width: fit-content; }
     .btn-primary:hover { background: var(--purple-mid); transform: translateY(-2px); }
 
-    /* ── SHOP SECTION ── */
-    .shop-section {
-      padding: 100px 60px;
-      background: var(--dark);
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-      display: block;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      color: var(--cream);
-      line-height: 1.1;
-    }
+    .shop-section { padding: 100px 60px; background: var(--dark); }
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); color: var(--cream); line-height: 1.1; }
     .section-title em { font-style: italic; color: var(--gold-light); }
 
-    /* ── FILTER BAR ── */
-    .filter-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 48px;
-      max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .filter-btn {
-      background: transparent;
-      border: 1px solid rgba(201,124,42,0.35);
-      color: rgba(245,237,224,0.65);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 8px 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 48px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+    .filter-btn { background: transparent; border: 1px solid rgba(201,124,42,0.35); color: rgba(245,237,224,0.65); font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 8px 20px; cursor: pointer; transition: all 0.2s; }
     .filter-btn:hover { border-color: var(--gold); color: var(--gold-light); }
     .filter-btn.active { background: var(--purple); border-color: var(--purple); color: var(--cream); }
 
-    /* ── PRODUCT GRID ── */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .product-card {
-      background: var(--charcoal);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 3/4;
-      transition: transform 0.3s;
-    }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; max-width: 1400px; margin: 0 auto; }
+    .product-card { background: var(--charcoal); cursor: pointer; position: relative; overflow: hidden; aspect-ratio: 3/4; transition: transform 0.3s; }
     .product-card:hover { transform: scale(1.01); z-index: 2; }
-
-    .product-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
-    }
+    .product-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
     .product-card:hover img { transform: scale(1.06); }
-
-    .product-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(26,15,10,0.92) 0%, rgba(26,15,10,0.1) 55%, transparent 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 24px 20px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    .product-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,15,10,0.92) 0%, rgba(26,15,10,0.1) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px 20px; opacity: 0; transition: opacity 0.3s; }
     .product-card:hover .product-overlay { opacity: 1; }
-
-    .product-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      color: var(--cream);
-      margin-bottom: 4px;
-    }
-    .product-price {
-      font-size: 0.9rem;
-      color: var(--gold-light);
-      font-weight: 500;
-      margin-bottom: 14px;
-    }
-    .product-price .shipping-note {
-      font-size: 0.72rem;
-      color: rgba(245,237,224,0.6);
-      margin-left: 6px;
-    }
-
-    .btn-buy {
-      background: var(--gold);
-      color: var(--dark);
-      border: none;
-      padding: 12px 24px;
-      font-size: 0.75rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      transition: background 0.2s;
-      width: 100%;
-    }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cream); margin-bottom: 4px; }
+    .product-price { font-size: 0.9rem; color: var(--gold-light); font-weight: 500; margin-bottom: 14px; }
+    .product-price .shipping-note { font-size: 0.72rem; color: rgba(245,237,224,0.6); margin-left: 6px; }
+    .btn-buy { background: var(--gold); color: var(--dark); border: none; padding: 12px 24px; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: background 0.2s; width: 100%; }
     .btn-buy:hover { background: var(--gold-light); }
+    .sold-out-badge { position: absolute; top: 16px; right: 16px; background: rgba(26,15,10,0.85); color: var(--cream); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 12px; border: 1px solid rgba(245,237,224,0.3); }
+    .product-info-bar { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(26,15,10,0.88) 0%, transparent 100%); padding: 40px 16px 14px; }
+    .product-info-bar .product-name { font-size: 0.9rem; margin-bottom: 2px; }
+    .product-info-bar .product-price { font-size: 0.82rem; margin-bottom: 0; }
 
-    .sold-out-badge {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: rgba(26,15,10,0.85);
-      color: var(--cream);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      border: 1px solid rgba(245,237,224,0.3);
-    }
-
-    /* Always-visible price tag at bottom (no hover needed on mobile) */
-    .product-info-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(26,15,10,0.88) 0%, transparent 100%);
-      padding: 40px 16px 14px;
-    }
-    .product-info-bar .product-name {
-      font-size: 0.9rem;
-      margin-bottom: 2px;
-    }
-    .product-info-bar .product-price {
-      font-size: 0.82rem;
-      margin-bottom: 0;
-    }
-
-    /* ── MODAL ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(10,5,3,0.88);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,5,3,0.88); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--cream);
-      color: var(--text-dark);
-      max-width: 560px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 1.6rem;
-      cursor: pointer;
-      color: var(--text-mid);
-      line-height: 1;
-      z-index: 10;
-    }
-
-    .modal-image {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      display: block;
-    }
-
+    .modal { background: var(--cream); color: var(--text-dark); max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--text-mid); line-height: 1; z-index: 10; }
+    .modal-image { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
     .modal-body { padding: 32px 36px 40px; }
-
-    .modal-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      color: var(--text-dark);
-      margin-bottom: 8px;
-    }
-    .modal-price {
-      font-size: 1.2rem;
-      color: var(--gold);
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .modal-shipping {
-      font-size: 0.8rem;
-      color: var(--text-mid);
-      margin-bottom: 20px;
-    }
-    .modal-desc {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--text-mid);
-      line-height: 1.7;
-      margin-bottom: 32px;
-      font-style: italic;
-    }
-
-    .modal-divider {
-      border: none;
-      border-top: 1px solid rgba(92,61,40,0.2);
-      margin-bottom: 28px;
-    }
-
-    .step-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-mid);
-      margin-bottom: 20px;
-      display: block;
-    }
-
-    /* Address form */
+    .modal-name { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-dark); margin-bottom: 8px; }
+    .modal-price { font-size: 1.2rem; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+    .modal-shipping { font-size: 0.8rem; color: var(--text-mid); margin-bottom: 20px; }
+    .modal-desc { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 32px; font-style: italic; }
+    .modal-divider { border: none; border-top: 1px solid rgba(92,61,40,0.2); margin-bottom: 28px; }
+    .step-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 20px; display: block; }
     .address-form { margin-bottom: 24px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .form-row.full { grid-template-columns: 1fr; }
     .form-row.three { grid-template-columns: 2fr 1fr 1fr; }
-
-    .address-form input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid rgba(92,61,40,0.25);
-      background: white;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      color: var(--text-dark);
-      outline: none;
-      transition: border-color 0.2s;
-    }
+    .address-form input { width: 100%; padding: 12px 14px; border: 1px solid rgba(92,61,40,0.25); background: white; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text-dark); outline: none; transition: border-color 0.2s; }
     .address-form input:focus { border-color: var(--purple); }
     .address-form input::placeholder { color: rgba(92,61,40,0.45); }
 
-    .paypal-btn-wrap { margin-top: 8px; }
-
-    /* ── OUR STORY ── */
-    .story-section {
-      background: var(--cream);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 60vh;
-    }
+    .story-section { background: var(--cream); display: grid; grid-template-columns: 1fr 1fr; min-height: 60vh; }
     .story-image { overflow: hidden; }
     .story-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .story-content {
-      padding: 80px 72px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .story-content .section-label { text-align: left; }
-    .story-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      color: var(--text-dark);
-      margin-bottom: 24px;
-      line-height: 1.15;
-    }
+    .story-content { padding: 80px 72px; display: flex; flex-direction: column; justify-content: center; }
+    .story-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); color: var(--text-dark); margin-bottom: 24px; line-height: 1.15; }
     .story-title em { font-style: italic; color: var(--gold); }
-    .story-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      color: var(--text-mid);
-      line-height: 1.9;
-    }
+    .story-text { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--text-mid); line-height: 1.9; }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--charcoal);
-      padding: 60px 60px 40px;
-      border-top: 1px solid rgba(201,124,42,0.2);
-    }
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 48px;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
+    footer { background: var(--charcoal); padding: 60px 60px 40px; border-top: 1px solid rgba(201,124,42,0.2); }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; gap: 40px; flex-wrap: wrap; }
     .footer-brand .nav-logo { font-size: 1.6rem; display: block; margin-bottom: 12px; }
-    .footer-brand p {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: rgba(245,237,224,0.55);
-      font-size: 1rem;
-      max-width: 260px;
-      line-height: 1.6;
-    }
-    .footer-links h4 {
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-    }
+    .footer-brand p { font-family: 'Cormorant Garamond', serif; font-style: italic; color: rgba(245,237,224,0.55); font-size: 1rem; max-width: 260px; line-height: 1.6; }
+    .footer-links h4 { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .footer-links ul { list-style: none; }
     .footer-links ul li { margin-bottom: 10px; }
-    .footer-links ul a {
-      color: rgba(245,237,224,0.6);
-      text-decoration: none;
-      font-size: 0.88rem;
-      transition: color 0.2s;
-    }
+    .footer-links ul a { color: rgba(245,237,224,0.6); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
     .footer-links ul a:hover { color: var(--gold-light); }
-    .footer-bottom {
-      border-top: 1px solid rgba(245,237,224,0.1);
-      padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .footer-bottom p {
-      font-size: 0.75rem;
-      color: rgba(245,237,224,0.35);
-    }
+    .footer-bottom { border-top: 1px solid rgba(245,237,224,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 0.75rem; color: rgba(245,237,224,0.35); }
 
-    /* ── MOBILE ── */
+    /* Easter egg trigger */
+    #eggTrigger { cursor: default; user-select: none; }
+
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
-
       .hero { grid-template-columns: 1fr; }
       .hero-image { height: 55vw; min-height: 260px; }
       .hero-content { padding: 48px 28px; }
-
       .shop-section { padding: 60px 16px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
-
       .story-section { grid-template-columns: 1fr; }
       .story-image { height: 260px; }
       .story-content { padding: 48px 28px; }
-
       footer { padding: 48px 28px 32px; }
       .footer-top { flex-direction: column; }
-
       .modal-body { padding: 24px 20px 32px; }
       .form-row { grid-template-columns: 1fr; }
       .form-row.three { grid-template-columns: 1fr; }
@@ -541,12 +132,10 @@
 </head>
 <body>
 
-  <!-- ANNOUNCEMENT BAR -->
   <div class="announce">
     ✦ One of a Kind. Never Repeated. Handmade in Philadelphia. &nbsp;<a href="#shop">Shop Now →</a>
   </div>
 
-  <!-- NAV -->
   <nav>
     <a class="nav-logo" href="#">Jewelz <span>ov Clay</span></a>
     <ul class="nav-links">
@@ -556,43 +145,30 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-image">
-      <!-- Replace hero.jpg with your actual hero image filename -->
-      <img src="images/hero.jpg" alt="Handmade jewelry by Jewelz Ov Clay" />
+      <img src="images/hero.jpg" alt="Handmade jewelry by Jewelz Ov Clay"/>
     </div>
     <div class="hero-content">
       <div class="hero-badge">✦ Handmade in Philadelphia</div>
-      <h1 class="hero-headline">
-        Wear the<br>
-        <em>Art.</em><br>
-        Own the Story.
-      </h1>
+      <h1 class="hero-headline">Wear the<br><em>Art.</em><br>Own the Story.</h1>
       <p class="hero-sub">"One of a Kind. Never Repeated."</p>
       <a href="#shop" class="btn-primary">Browse the Collection</a>
     </div>
   </section>
 
-  <!-- SHOP -->
   <section class="shop-section" id="shop">
     <div class="section-header">
       <span class="section-label">✦ The Collection</span>
       <h2 class="section-title">Every Piece is <em>One of One</em></h2>
     </div>
-
     <div class="filter-bar" id="filterBar"></div>
-
-    <div class="product-grid" id="productGrid">
-      <!-- Products are rendered by JavaScript below -->
-    </div>
+    <div class="product-grid" id="productGrid"></div>
   </section>
 
-  <!-- OUR STORY -->
   <section class="story-section" id="story">
     <div class="story-image">
-      <!-- Replace story.jpg with your actual image -->
-      <img src="images/story.jpg" alt="The artist behind Jewelz Ov Clay" />
+      <img src="images/story.jpg" alt="The artist behind Jewelz Ov Clay"/>
     </div>
     <div class="story-content">
       <span class="section-label">✦ Our Story</span>
@@ -600,12 +176,12 @@
       <p class="story-text">
         Every piece of Jewelz Ov Clay is shaped by hand right here in Philadelphia.
         No factories. No duplicates. Just one artist pouring intention into every bead,
-        every clasp, every curve. When you wear a piece, you carry that story with you.
+        every clasp, every curve. Born during the pandemic. Built to last forever.
+        When you wear a piece, you carry that story with you.
       </p>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer id="contact">
     <div class="footer-top">
       <div class="footer-brand">
@@ -622,7 +198,7 @@
       <div class="footer-links">
         <h4>Contact</h4>
         <ul>
-          <li><a href="mailto:your@email.com">your@email.com</a></li>
+          <li><a href="mailto:BuhzzedEnt@gmail.com">BuhzzedEnt@gmail.com</a></li>
           <li><a href="#">Instagram</a></li>
           <li><a href="#">TikTok</a></li>
         </ul>
@@ -630,7 +206,7 @@
     </div>
     <div class="footer-bottom">
       <p>© 2025 Jewelz Ov Clay. All rights reserved. Philadelphia, PA.</p>
-      <p>Handmade with love ✦</p>
+      <p id="eggTrigger" onclick="eggClick()">Handmade with love ✦</p>
     </div>
   </footer>
 
@@ -648,123 +224,83 @@
         <span class="step-label">✦ Enter your shipping address</span>
         <div class="address-form">
           <div class="form-row">
-            <input type="text" id="fieldFirst" placeholder="First Name" />
-            <input type="text" id="fieldLast" placeholder="Last Name" />
+            <input type="text" id="fieldFirst" placeholder="First Name"/>
+            <input type="text" id="fieldLast" placeholder="Last Name"/>
           </div>
           <div class="form-row full">
-            <input type="text" id="fieldStreet" placeholder="Street Address" />
+            <input type="text" id="fieldStreet" placeholder="Street Address"/>
           </div>
           <div class="form-row three">
-            <input type="text" id="fieldCity" placeholder="City" />
-            <input type="text" id="fieldState" placeholder="State" />
-            <input type="text" id="fieldZip" placeholder="ZIP" />
+            <input type="text" id="fieldCity" placeholder="City"/>
+            <input type="text" id="fieldState" placeholder="State"/>
+            <input type="text" id="fieldZip" placeholder="ZIP"/>
           </div>
           <div class="form-row full">
-            <input type="email" id="fieldEmail" placeholder="Email (for order confirmation)" />
+            <input type="email" id="fieldEmail" placeholder="Email (for order confirmation)"/>
           </div>
         </div>
-        <!-- PayPal Button renders here -->
-        <div class="paypal-btn-wrap" id="paypalButtonContainer"></div>
+        <div id="paypalButtonContainer"></div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       PRODUCT DATA — Edit this list to add/remove
-       pieces. Set soldOut: true to gray it out.
-       Replace image filenames with your actual files.
-  ══════════════════════════════════════════ -->
   <script>
     const PAYPAL_EMAIL = "buhzzedent@gmail.com";
 
     const products = [
-      // ── HOOP & CIRCLE DROPS ──
-      { id: 1,  name: "Neon Orbit Drops",         price: 30, image: "images/IMG_2490.jpeg", category: "Hoops & Circles", desc: "Swirling pink, green and gold clay hoops cascade from a trail of mixed crystal beads. Feels like wearing a galaxy.", soldOut: false },
-      { id: 2,  name: "Prism Storm Hoops",        price: 30, image: "images/IMG_2492.jpeg", category: "Hoops & Circles", desc: "Oversized clay orbit hoops in electric pink, purple and green glitter swirls. Long bead chain with crackle and stone accents.", soldOut: false },
-      { id: 3,  name: "Velvet Swirl Hoops",       price: 30, image: "images/IMG_2493.jpeg", category: "Hoops & Circles", desc: "Pink and purple marbled clay hoops with a long mixed bead cascade. Soft energy with bold presence.", soldOut: false },
-      { id: 4,  name: "Galaxy Melt Hoops",        price: 30, image: "images/IMG_2494.jpeg", category: "Hoops & Circles", desc: "Pink, green and black galaxy swirl clay hoops dripping from a chain of purple and crackle beads.", soldOut: false },
-      { id: 5,  name: "Acid Rain Hoops",          price: 30, image: "images/IMG_2495.jpeg", category: "Hoops & Circles", desc: "Five variations of the same bold hoop silhouette in pink, purple and lime. Each one slightly different like nature intended.", soldOut: false },
-      { id: 6,  name: "Rainbow Riot Hoops",       price: 30, image: "images/IMG_2531.jpeg", category: "Hoops & Circles", desc: "Full spectrum color blast on oversized clay circle drops with rainbow crystal bead chains. Joyful, loud and unapologetic.", soldOut: false },
-      { id: 7,  name: "Citrus Orbit Hoops",       price: 30, image: "images/IMG_2532.jpeg", category: "Hoops & Circles", desc: "Rainbow stained clay circles with full spectrum bead chains. These are the ones people stop you to ask about.", soldOut: false },
-      { id: 8,  name: "Solstice Hoops",           price: 30, image: "images/IMG_2534.jpeg", category: "Hoops & Circles", desc: "Rainbow mosaic clay circles with full spectrum crystal beads descending from a clay coin topper. Earthy and electric at once.", soldOut: false },
-      { id: 9,  name: "Spectrum Spin Hoops",      price: 30, image: "images/IMG_2535.jpeg", category: "Hoops & Circles", desc: "Rainbow clay circles with mismatched full spectrum bead chains. No two sides match and that is exactly the point.", soldOut: false },
-      { id: 10, name: "Twilight Circle Drops",    price: 30, image: "images/IMG_2539.jpeg", category: "Hoops & Circles", desc: "Purple and green patterned clay circles suspended from gold hoop connectors and a mixed bead chain. Dusk in earring form.", soldOut: false },
-      { id: 11, name: "Mardi Glo Hoops",          price: 30, image: "images/IMG_2540.jpeg", category: "Hoops & Circles", desc: "Pink, purple and lime clay circles with gold hoop accents and a mixed crystal bead chain. Festival ready.", soldOut: false },
+      // ── HOOPS & CIRCLES ──
+      { id:1, name:"Neon Orbit Drops", price:30, image:"images/IMG_2490.jpeg", category:"Hoops & Circles",
+        desc:"Swirling pink, green and gold clay hoops cascade from a trail of mixed crystal beads — crackle, stone and glitter all layered together. Feels like wearing a galaxy. Long, dramatic and completely one of a kind.", soldOut:false },
 
-      // ── TEARDROP DROPS ──
-      { id: 12, name: "Alien Jungle Teardrops",   price: 30, image: "images/IMG_2868.jpeg", category: "Teardrops", desc: "Purple and lime green teardrop clay pendants with skull bead accents and mixed stone chains. Dark beauty with a wild heart.", soldOut: false },
-      { id: 13, name: "Midnight Bloom Teardrops", price: 30, image: "images/IMG_2856.jpeg", category: "Teardrops", desc: "Deep blue and green galaxy clay teardrops with silver skull charms and layered crystal bead chains.", soldOut: false },
-      { id: 14, name: "Violet Rain Teardrops",    price: 30, image: "images/IMG_2868.jpeg", category: "Teardrops", desc: "Purple, green and black swirl teardrops with mixed purple and lime bead chains. Long and dramatic.", soldOut: false },
-      { id: 15, name: "Poison Garden Teardrops",  price: 30, image: "images/IMG_2873.jpeg", category: "Teardrops", desc: "Neon green and purple teardrop clay drops with long beaded chains of frosted and jewel tone beads. Eerily beautiful.", soldOut: false },
-      { id: 16, name: "Nebula Teardrops",         price: 30, image: "images/IMG_2867.jpeg", category: "Teardrops", desc: "Purple, green and black marbled clay teardrops with pink and mint bead chains. Like holding a piece of the night sky.", soldOut: false },
-      { id: 17, name: "Aurora Teardrops",         price: 30, image: "images/IMG_2881.jpeg", category: "Teardrops", desc: "Iridescent pink and yellow swirl teardrops with soft pastel bead chains. Dreamy and luminous.", soldOut: false },
-      { id: 18, name: "Cosmic Drift Teardrops",   price: 30, image: "images/IMG_2882.jpeg", category: "Teardrops", desc: "Pink and purple iridescent swirl teardrops with mixed blue and purple crackle bead chains. Pure shimmer.", soldOut: false },
-      { id: 19, name: "Snakeskin Teardrops",      price: 30, image: "images/IMG_2886.jpeg", category: "Teardrops", desc: "Purple and green reptile patterned clay teardrops with mixed dark bead chains. Edgy and unforgettable.", soldOut: false },
-      { id: 20, name: "Peacock Teardrops",        price: 30, image: "images/IMG_2887.jpeg", category: "Teardrops", desc: "Green and purple peacock patterned clay teardrops on gold oval studs with layered crystal beads.", soldOut: false },
-      { id: 21, name: "Venom Scale Teardrops",    price: 30, image: "images/IMG_2889.jpeg", category: "Teardrops", desc: "Purple and green scale patterned clay teardrops with silver oval studs and mixed crystal chain.", soldOut: false },
-      { id: 22, name: "Eclipse Teardrops",        price: 30, image: "images/IMG_2890.jpeg", category: "Teardrops", desc: "Dark scale patterned teardrops in purple and green with black and lime bead accents.", soldOut: false },
-      { id: 23, name: "Mango Swirl Teardrops",    price: 30, image: "images/IMG_2873.jpeg", category: "Teardrops", desc: "Bright citrus and rainbow swirl teardrops hanging from silver ball studs with gold hoop and rainbow crystals inside.", soldOut: false },
-      { id: 24, name: "Tropics Teardrops",        price: 30, image: "images/IMG_2875.jpeg", category: "Teardrops", desc: "Full spectrum rainbow swirl clay teardrops with gold ball studs and rainbow crystal hoop accents.", soldOut: false },
-      { id: 25, name: "Prism Fall Teardrops",     price: 30, image: "images/IMG_2876.jpeg", category: "Teardrops", desc: "Rainbow mosaic teardrops with gold ball studs and mixed rainbow crystal hoop inserts.", soldOut: false },
+      { id:2, name:"Prism Storm Hoops", price:30, image:"images/IMG_2492.jpeg", category:"Hoops & Circles",
+        desc:"Oversized clay orbit hoops in electric pink, purple and green glitter swirls hang from a long mixed bead chain packed with crackle and stone accents. These are the ones that clear a room.", soldOut:false },
 
-      // ── HEXAGON DROPS ──
-      { id: 26, name: "Hex Venom Drops",          price: 30, image: "images/IMG_2547.jpeg", category: "Hexagons", desc: "Hexagon clay pendants swirled in purple and lime green with mixed frosted and jewel tone bead chains.", soldOut: false },
-      { id: 27, name: "Cosmic Hex Glow",          price: 30, image: "images/IMG_2549.jpeg", category: "Hexagons", desc: "Hexagon hoops in neon pink, purple and green with galaxy dot detailing and long cascading bead chains.", soldOut: false },
-      { id: 28, name: "Hex Jungle",               price: 30, image: "images/IMG_2546.jpeg", category: "Hexagons", desc: "Purple and green hexagon hoops with long chains of black, purple and lime beads. Deep and wild.", soldOut: false },
-      { id: 29, name: "Toxic Hex",                price: 30, image: "images/IMG_2548.jpeg", category: "Hexagons", desc: "Green and purple hexagon pendants with mixed black and purple bead chains. Bold and dangerous looking.", soldOut: false },
-      { id: 30, name: "Hex Galaxy",               price: 30, image: "images/IMG_2550.jpeg", category: "Hexagons", desc: "Pink, purple and green hexagon hoops with mixed soft bead chains. Feminine power.", soldOut: false },
-      { id: 31, name: "Neon Hex Storm",           price: 30, image: "images/IMG_2552.jpeg", category: "Hexagons", desc: "Bright pink and lime hexagon drops with long chains of mixed frosted and glitter beads.", soldOut: false },
+      { id:3, name:"Acid Rain Collection", price:30, image:"images/IMG_2496.jpeg", category:"Hoops & Circles",
+        desc:"Five variations of the same bold hoop silhouette in pink, purple and lime — each one slightly different, like nature intended. Long bead chains in purple, gray and green crystals. Pick your vibe.", soldOut:false },
 
-      // ── DIAMOND DROPS ──
-      { id: 32, name: "Peace & Poison Diamonds",  price: 30, image: "images/IMG_2526.jpeg", category: "Diamonds", desc: "Bold diamond clay pendants in black, purple and electric green with a silver peace sign charm mid chain.", soldOut: false },
-      { id: 33, name: "Jungle Diamond",           price: 30, image: "images/IMG_2527.jpeg", category: "Diamonds", desc: "Green and purple diamond clay drops with a silver peace sign accent and layered bead chain.", soldOut: false },
-      { id: 34, name: "Starfall Diamonds",        price: 30, image: "images/IMG_2541.jpeg", category: "Diamonds", desc: "Rainbow mosaic diamond clay drops with gold star charms and full spectrum crystal bead chains.", soldOut: false },
-      { id: 35, name: "Solar Flare Diamonds",     price: 30, image: "images/IMG_2542.jpeg", category: "Diamonds", desc: "Iridescent swirl diamond drops with gold star charms and rainbow crystal bead accents.", soldOut: false },
-      { id: 36, name: "Nova Diamonds",            price: 30, image: "images/IMG_2543.jpeg", category: "Diamonds", desc: "Rainbow swirl diamonds with gold star chain accents and a gold fan charm base. Statement from top to bottom.", soldOut: false },
-      { id: 37, name: "Prism Star Diamonds",      price: 30, image: "images/IMG_2544.jpeg", category: "Diamonds", desc: "Vivid mosaic diamond clay drops with gold star charms and rainbow bead chains ending in gold fan charms.", soldOut: false },
-      { id: 38, name: "Spectrum Diamonds",        price: 30, image: "images/IMG_2545.jpeg", category: "Diamonds", desc: "Multicolor swirl clay diamonds with gold stars and rainbow crystals cascading to a golden fan finish.", soldOut: false },
+      { id:4, name:"Citrus Orbit Hoops", price:30, image:"images/IMG_2532.jpeg", category:"Hoops & Circles",
+        desc:"Rainbow stained clay circles packed with mosaic color — every angle catches the light differently. Full spectrum bead chains cascade below. These are the ones people stop you to ask about.", soldOut:false },
 
-      // ── HEART DROPS ──
-      { id: 39, name: "Rainbow Heart Chain",      price: 30, image: "images/IMG_2499.jpeg", category: "Hearts", desc: "Three rainbow clay hearts linked by silver rings with an evil eye bead accent mid chain. Love and protection combined.", soldOut: false },
-      { id: 40, name: "Poison Heart Chain",       price: 30, image: "images/IMG_2508.jpeg", category: "Hearts", desc: "Purple and green clay hearts stacked with gold rings and an evil eye charm. Dark romance.", soldOut: false },
-      { id: 41, name: "Neon Heart Stack",         price: 30, image: "images/IMG_2513.jpeg", category: "Hearts", desc: "Pink and green clay hearts cascading from gold rings with a protective evil eye mid charm.", soldOut: false },
-      { id: 42, name: "Jungle Heart Drop",        price: 30, image: "images/IMG_2514.jpeg", category: "Hearts", desc: "Three stacked clay hearts in pink, purple and green with silver rings and an evil eye charm.", soldOut: false },
-      { id: 43, name: "Electric Heart Stack",     price: 30, image: "images/IMG_2516.jpeg", category: "Hearts", desc: "Pink and green marbled clay heart stacks with silver ring links and protective evil eye accents.", soldOut: false },
-      { id: 44, name: "Glitter Heart Chain",      price: 30, image: "images/IMG_2517.jpeg", category: "Hearts", desc: "Gold toned heart chain with three clay hearts in neon pink, purple and lime. Long and luminous.", soldOut: false },
-      { id: 45, name: "Cosmic Heart Drop",        price: 30, image: "images/IMG_2518.jpeg", category: "Hearts", desc: "Three marbled clay hearts in pink, green and purple on gold rings with a protective eye bead.", soldOut: false },
+      { id:5, name:"Solstice Hoops", price:30, image:"images/IMG_2534.jpeg", category:"Hoops & Circles",
+        desc:"Rainbow mosaic clay circles with gold ball studs and mismatched full spectrum crystal bead chains. Earthy and electric at once. No two sides look the same and that is the whole point.", soldOut:false },
 
-      // ── SKULL DROPS ──
-      { id: 46, name: "Green Skull Threaders",    price: 30, image: "images/IMG_3606.jpeg", category: "Skulls", desc: "Long chain threader earrings with lime green skull beads and a clay disc pendant. Subtle until you look closer.", soldOut: false },
-      { id: 47, name: "Blue Skull Threads",       price: 30, image: "images/IMG_3615.jpeg", category: "Skulls", desc: "Silver chain threaders with blue skull beads, crackle stone accents and a clay heart pendant below. Haunting and sweet.", soldOut: false },
-      { id: 48, name: "Skull & Bone Threads",     price: 30, image: "images/IMG_3616.jpeg", category: "Skulls", desc: "Silver threader earrings featuring blue skull beads and vivid rainbow clay heart pendants.", soldOut: false },
-      { id: 49, name: "Silver Skull Drops",       price: 30, image: "images/IMG_2856.jpeg", category: "Skulls", desc: "Silver skull charm beads stacked above deep blue galaxy teardrops with crystal chains.", soldOut: false },
-      { id: 50, name: "Skull & Soul Drops",       price: 30, image: "images/IMG_2873.jpeg", category: "Skulls", desc: "Silver skull accents with purple crystal beads and clay teardrop pendants in blue galaxy swirl.", soldOut: false },
-      { id: 51, name: "Ghost Skull Threaders",    price: 30, image: "images/IMG_3592.jpeg", category: "Skulls", desc: "Long silver chain threaders with green skull beads, purple spacers and a purple and green clay disc drop.", soldOut: false },
-      { id: 52, name: "Skull Chain Threaders",    price: 30, image: "images/IMG_3607.jpeg", category: "Skulls", desc: "Silver chain threaders with green skull beads in multiple colorways and clay coin pendants below.", soldOut: false },
-      { id: 53, name: "Day of the Dead Threads",  price: 30, image: "images/IMG_2879.jpeg", category: "Skulls", desc: "Gold chain threaders with green skull beads, rainbow crystals and a clay heart pendant drop.", soldOut: false },
+      // ── HEARTS ──
+      { id:6, name:"Rainbow Heart Chain", price:30, image:"images/IMG_2501.jpeg", category:"Hearts",
+        desc:"Three rainbow clay hearts linked by hammered silver rings with an evil eye bead charm mid chain. Love and protection combined in one long dramatic drop. Bold color, deep meaning.", soldOut:false },
 
-      // ── EVIL EYE ──
-      { id: 54, name: "Evil Eye Stacked Drops",   price: 30, image: "images/IMG_3592.jpeg", category: "Evil Eye", desc: "Three stacked clay discs with an evil eye charm between them on blue ball studs. Watchful and stunning.", soldOut: false },
-      { id: 55, name: "Evil Eye Circle Stack",    price: 30, image: "images/IMG_3601.jpeg", category: "Evil Eye", desc: "Clay coin stack earrings with an evil eye charm centered between two marbled clay discs.", soldOut: false },
-      { id: 56, name: "Triple Eye Drops",         price: 30, image: "images/IMG_3602.jpeg", category: "Evil Eye", desc: "Three clay discs with an evil eye between each layer. Bold protection in earring form.", soldOut: false },
-      { id: 57, name: "Evil Eye Gaze",            price: 30, image: "images/IMG_3603.jpeg", category: "Evil Eye", desc: "Stacked clay coin drops with centered evil eye charm. Minimal profile, maximum energy.", soldOut: false },
+      // ── DIAMONDS ──
+      { id:7, name:"Jungle Diamond Drops", price:30, image:"images/IMG_2527.jpeg", category:"Diamonds",
+        desc:"Green and purple diamond clay drops with a silver peace sign accent and layered bead chains of gray, purple and crystal. Dark and bold with a message built right in.", soldOut:false },
 
-      // ── THREADER CHAINS ──
-      { id: 58, name: "Purple Heart Threaders",   price: 30, image: "images/IMG_3611.jpeg", category: "Threaders", desc: "Long silver chain threaders with purple and green beads ending in a purple and green clay heart pendant.", soldOut: false },
-      { id: 59, name: "Gold Heart Threaders",     price: 30, image: "images/IMG_3612.jpeg", category: "Threaders", desc: "Gold chain threaders with black, purple and green bead accents and a glittery clay heart pendant drop.", soldOut: false },
-      { id: 60, name: "Rainbow Thread Drops",     price: 30, image: "images/IMG_3617.jpeg", category: "Threaders", desc: "Silver chain threaders with full rainbow crystal bead chains and vivid clay circle pendants.", soldOut: false },
-      { id: 61, name: "Violet Orbit Threaders",   price: 30, image: "images/IMG_3618.jpeg", category: "Threaders", desc: "Silver chain threaders with purple and green bead chains and a purple and green clay disc drop.", soldOut: false },
-      { id: 62, name: "Galaxy Thread Drops",      price: 30, image: "images/IMG_3619.jpeg", category: "Threaders", desc: "Long chain threaders with mixed dark and bright bead chains ending in iridescent clay pendants.", soldOut: false },
-      { id: 63, name: "Midnight Threaders",       price: 30, image: "images/IMG_3620.jpeg", category: "Threaders", desc: "Silver threaders with green, black and purple bead chains ending in a swirled purple and green clay disc.", soldOut: false },
-      { id: 64, name: "Stardust Threaders",       price: 30, image: "images/IMG_3621.jpeg", category: "Threaders", desc: "Long chain threaders in multiple colorways with skull beads, rainbow crystals and clay pendants.", soldOut: false },
+      { id:8, name:"Starfall Diamonds", price:30, image:"images/IMG_2542.jpeg", category:"Diamonds",
+        desc:"Rainbow mosaic diamond clay drops with gold star charms descending through full spectrum crystal beads down to a gold fan charm at the bottom. A statement from top to bottom.", soldOut:false },
 
-      // ── NECKLACES ──
-      { id: 65, name: "Solar Diamond Pendant",    price: 30, image: "images/IMG_6335.jpeg", category: "Necklaces", desc: "Bold orange and green swirled clay diamond pendant on a black cord choker. Grounded and striking.", soldOut: false },
-      { id: 66, name: "Crimson Leaf Pendant",     price: 30, image: "images/IMG_6336.jpeg", category: "Necklaces", desc: "Handformed clay maple leaf in rich red and gold tones on a silver cord necklace. Wearable art for every season.", soldOut: false },
-      { id: 67, name: "Silver Scales Pendant",    price: 30, image: "images/IMG_6337.jpeg", category: "Necklaces", desc: "Monochromatic silver and grey scale patterned clay teardrop on a silver cord. Understated but unforgettable.", soldOut: false },
+      // ── HEXAGONS ──
+      { id:9, name:"Hex Jungle Drops", price:30, image:"images/IMG_2546.jpeg", category:"Hexagons",
+        desc:"Purple and green hexagon clay hoops with long chains of black, purple and lime beads. Deep, wild energy. The kind of earring that has its own personality before you even put them on.", soldOut:false },
+
+      { id:10, name:"Neon Hex Storm", price:30, image:"images/IMG_2552.jpeg", category:"Hexagons",
+        desc:"Bright pink, purple and lime hexagon drops packed with glitter and pattern detail. Long chains of mixed frosted, crackle and purple beads cascade below. Loud and unapologetic.", soldOut:false },
+
+      // ── SKULLS ──
+      { id:11, name:"Midnight Skull Teardrops", price:30, image:"images/IMG_2859.jpeg", category:"Skulls",
+        desc:"Silver skull charm beads stacked with green and purple crystals above deep blue and green galaxy glitter clay teardrops. Haunting and beautiful. Dark romance in earring form.", soldOut:false },
+
+      { id:12, name:"Green Skull Threaders", price:30, image:"images/IMG_3607.jpeg", category:"Skulls",
+        desc:"Long silver chain threader earrings with bright lime green skull beads, black and purple spacers and a swirled clay disc pendant below. Subtle until you look closer — then it all hits at once.", soldOut:false },
+
+      { id:13, name:"Blue Skull Heart Threads", price:30, image:"images/IMG_3615.jpeg", category:"Skulls",
+        desc:"Silver chain threaders with stacked crackle stone beads in gray, blue and purple leading down to bold blue skull charms. A vivid rainbow clay heart pendant hangs below. Sweet and sinister.", soldOut:false },
+
+      // ── TEARDROPS ──
+      { id:14, name:"Poison Garden Teardrops", price:30, image:"images/IMG_2867.jpeg", category:"Teardrops",
+        desc:"Purple, green and black marbled clay teardrops with coin stud tops and long chains of pink crackle, green and clear beads. Eerily beautiful. Like holding a piece of the night sky.", soldOut:false },
+
+      { id:15, name:"Tropics Collection", price:30, image:"images/IMG_2877.jpeg", category:"Teardrops",
+        desc:"Five vivid rainbow swirl clay teardrop variants in orange, yellow, green and purple — each with coin stud tops and rainbow crystal hoop accents. Pick your favorite or collect them all.", soldOut:false },
     ];
 
-    // ── CATEGORY FILTERS ──
+    // ── FILTER BAR ──
     const categories = ['All', ...new Set(products.map(p => p.category))];
     const filterBar = document.getElementById('filterBar');
     let activeCategory = 'All';
@@ -792,7 +328,7 @@
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-          <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          <img src="${p.image}" alt="${p.name}" loading="lazy"/>
           <div class="product-info-bar">
             <div class="product-name">${p.name}</div>
             <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 ship</span></div>
@@ -802,8 +338,7 @@
             <div class="product-price">$${p.price}.00<span class="shipping-note">+ $6 shipping</span></div>
             ${p.soldOut
               ? `<button class="btn-buy" disabled style="opacity:0.4;cursor:not-allowed;">Sold Out</button>`
-              : `<button class="btn-buy" onclick="openModal(${p.id})">Buy This Piece</button>`
-            }
+              : `<button class="btn-buy" onclick="openModal(${p.id})">Buy This Piece</button>`}
           </div>
           ${p.soldOut ? `<div class="sold-out-badge">Sold Out</div>` : ''}
         `;
@@ -819,20 +354,14 @@
     function openModal(id) {
       currentProduct = products.find(p => p.id === id);
       if (!currentProduct) return;
-
       document.getElementById('modalImage').src = currentProduct.image;
       document.getElementById('modalImage').alt = currentProduct.name;
       document.getElementById('modalName').textContent = currentProduct.name;
       document.getElementById('modalPrice').textContent = `$${currentProduct.price}.00`;
       document.getElementById('modalDesc').textContent = currentProduct.desc;
-
-      // Clear address fields
       ['fieldFirst','fieldLast','fieldStreet','fieldCity','fieldState','fieldZip','fieldEmail']
         .forEach(f => document.getElementById(f).value = '');
-
-      // Render PayPal button
       renderPayPalButton(currentProduct);
-
       document.getElementById('modalOverlay').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -849,33 +378,23 @@
       if (e.target === this) closeModal();
     });
 
-    // ── PAYPAL BUTTON ──
+    // ── PAYPAL ──
     function renderPayPalButton(product) {
       const container = document.getElementById('paypalButtonContainer');
       container.innerHTML = '';
-
       const totalPrice = (product.price + 6).toFixed(2);
       const itemName = encodeURIComponent(product.name + " - Jewelz Ov Clay");
 
-      // Build address note for PayPal memo
       function getAddress() {
-        const f = document.getElementById('fieldFirst').value.trim();
-        const l = document.getElementById('fieldLast').value.trim();
-        const s = document.getElementById('fieldStreet').value.trim();
-        const c = document.getElementById('fieldCity').value.trim();
-        const st = document.getElementById('fieldState').value.trim();
-        const z = document.getElementById('fieldZip').value.trim();
-        const e = document.getElementById('fieldEmail').value.trim();
-        return { f, l, s, c, st, z, e };
-      }
-
-      function validateAddress() {
-        const a = getAddress();
-        if (!a.f || !a.l || !a.s || !a.c || !a.st || !a.z || !a.e) {
-          alert("Please fill in all shipping fields before paying.");
-          return false;
-        }
-        return true;
+        return {
+          f: document.getElementById('fieldFirst').value.trim(),
+          l: document.getElementById('fieldLast').value.trim(),
+          s: document.getElementById('fieldStreet').value.trim(),
+          c: document.getElementById('fieldCity').value.trim(),
+          st: document.getElementById('fieldState').value.trim(),
+          z: document.getElementById('fieldZip').value.trim(),
+          e: document.getElementById('fieldEmail').value.trim()
+        };
       }
 
       const btn = document.createElement('button');
@@ -884,24 +403,21 @@
       btn.textContent = `Pay $${totalPrice} via PayPal`;
 
       btn.addEventListener('click', function() {
-        if (!validateAddress()) return;
         const a = getAddress();
+        if (!a.f || !a.l || !a.s || !a.c || !a.st || !a.z || !a.e) {
+          alert("Please fill in all shipping fields before paying.");
+          return;
+        }
         const note = encodeURIComponent(
           `ORDER: ${product.name} | Ship to: ${a.f} ${a.l}, ${a.s}, ${a.c} ${a.st} ${a.z} | Email: ${a.e}`
         );
-        const paypalURL =
-          `https://www.paypal.com/cgi-bin/webscr` +
-          `?cmd=_xclick` +
+        const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick` +
           `&business=${encodeURIComponent(PAYPAL_EMAIL)}` +
-          `&item_name=${itemName}` +
-          `&amount=${totalPrice}` +
-          `&currency_code=USD` +
-          `&no_shipping=1` +
-          `&custom=${note}` +
-          `&return=` + encodeURIComponent(window.location.href) +
-          `&cancel_return=` + encodeURIComponent(window.location.href);
-
-        window.open(paypalURL, '_blank');
+          `&item_name=${itemName}&amount=${totalPrice}&currency_code=USD` +
+          `&no_shipping=1&custom=${note}` +
+          `&return=${encodeURIComponent(window.location.href)}` +
+          `&cancel_return=${encodeURIComponent(window.location.href)}`;
+        window.open(url, '_blank');
       });
 
       container.appendChild(btn);
@@ -911,7 +427,18 @@
       note.textContent = 'You will be redirected to PayPal to complete your purchase securely.';
       container.appendChild(note);
     }
-  </script>
 
+    // ── EASTER EGG (7 clicks on footer text) ──
+    let eggClicks = 0, eggTimer = null;
+    function eggClick() {
+      eggClicks++;
+      clearTimeout(eggTimer);
+      if (eggClicks >= 7) {
+        eggClicks = 0;
+        window.open('game.html', '_blank', 'width=420,height=760');
+      }
+      eggTimer = setTimeout(() => eggClicks = 0, 3000);
+    }
+  </script>
 </body>
 </html>
